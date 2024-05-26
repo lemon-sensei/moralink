@@ -4,7 +4,7 @@ import 'package:moralink/config/firebase_config.dart';
 class FirebaseService {
   static Future<void> initializeFirebase() async {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
         apiKey: FirebaseConfig.apiKey,
         authDomain: FirebaseConfig.authDomain,
         projectId: FirebaseConfig.projectId,

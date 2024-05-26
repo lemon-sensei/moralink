@@ -1,8 +1,12 @@
+// ---------- Common
 import 'package:flutter/material.dart';
+import 'package:moralink/views/event/event_list.dart';
+import 'app_drawer.dart';
+
+// ---------- Provider
+import 'package:provider/provider.dart';
 import 'package:moralink/providers/auth_provider.dart';
 import 'package:moralink/providers/event_provider.dart';
-import 'package:moralink/views/event/event_list.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,52 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Moralink'),
+        title: const Center(child: Text('Moralink')),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: authProvider.signOut,
+            icon: const Icon(Icons.qr_code_scanner_rounded),
+            onPressed: () {},
           ),
         ],
       ),
-      body: authProvider.currentUser == null
-          ? const Center(child: CircularProgressIndicator())
-          : eventProvider.events.isEmpty
+      body: eventProvider.events.isEmpty
           ? const Center(child: Text('No events found'))
           : const EventListScreen(),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Welcome, ${authProvider.currentUser?.displayName ?? ''}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
-              onTap: () {
-                // Navigate to profile screen
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                // Navigate to settings screen
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: AppDrawer(authProvider: authProvider),
     );
   }
 }

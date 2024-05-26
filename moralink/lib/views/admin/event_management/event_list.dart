@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:moralink/providers/event_provider.dart';
-import 'package:moralink/views/event/widgets/event_card.dart';
 import 'package:provider/provider.dart';
 
-class EventListScreen extends StatelessWidget {
-  const EventListScreen({super.key});
+class EventListAdmin extends StatelessWidget {
+  const EventListAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +17,23 @@ class EventListScreen extends StatelessWidget {
         itemCount: eventProvider.events.length,
         itemBuilder: (context, index) {
           final event = eventProvider.events[index];
-          return EventCard(
-            event: event,
-            onTap: () {
-              // Navigate to event details screen
-            },
+          return ListTile(
+            title: Text(event.title),
+            subtitle: Text(event.description),
+            trailing: IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () {
+                // Navigate to update event screen
+              },
+            ),
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navigate to create event screen
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }

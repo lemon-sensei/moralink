@@ -1,13 +1,18 @@
-import 'package:firebase_core/firebase_core.dart';
+// ---------- Common
 import 'package:flutter/material.dart';
+
+// ---------- Network
+import 'package:firebase_core/firebase_core.dart';
 import 'package:moralink/config/firebase_config.dart';
+import 'package:moralink/routes.dart';
+import 'package:url_strategy/url_strategy.dart';
+
+// ---------- Provider
+import 'package:provider/provider.dart';
 import 'package:moralink/providers/auth_provider.dart';
 import 'package:moralink/providers/event_provider.dart';
 import 'package:moralink/providers/language_provider.dart';
 import 'package:moralink/providers/theme_provider.dart';
-import 'package:moralink/routes.dart';
-import 'package:moralink/services/firebase_service.dart';
-import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +38,8 @@ Future<void> main() async {
       child: const MoralinkApp(),
     ),
   );
+
+  setPathUrlStrategy();
 }
 
 class MoralinkApp extends StatelessWidget {
@@ -43,7 +50,8 @@ class MoralinkApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final languageProvider = Provider.of<LanguageProvider>(context);
 
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: router,
       title: 'Moralink',
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
@@ -53,8 +61,7 @@ class MoralinkApp extends StatelessWidget {
         Locale('en'),
         Locale('th'),
       ],
-      initialRoute: Routes.home,
-      onGenerateRoute: Routes.generateRoute,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

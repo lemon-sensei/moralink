@@ -1,56 +1,78 @@
+// ---------- Common
 import 'package:flutter/material.dart';
-//import 'package:moralink/views/admin/admin_dashboard.dart';
+import 'models/event.dart';
+import 'package:moralink/models/event_category.dart';
+import 'package:moralink/models/location.dart';
+
+// ---------- Screen
+import 'package:moralink/views/admin/admin_dashboard.dart';
 import 'package:moralink/views/auth/login.dart';
 import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
 import 'package:moralink/views/home.dart';
-import 'package:moralink/views/splashScreen.dart';
-//import 'package:moralink/views/profile/profile.dart';
-//import 'package:moralink/views/settings/settings.dart';
+import 'package:moralink/views/splash_screen.dart';
 
-import 'models/event.dart';
+// ---------- Network
+import 'package:go_router/go_router.dart';
 
-class Routes {
-  static const String splash = '/';
-  static const String login = '/login';
-  static const String home = '/home';
-  static const String eventList = '/event-list';
-  static const String eventDetails = '/event-details';
-  static const String profile = '/profile';
-  static const String settings = '/settings';
-  static const String adminDashboard = '/admin/dashboard';
+GoRouter get router => _router;
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case splash:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case login:
-        return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case home:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
-      case eventList:
-        return MaterialPageRoute(builder: (_) => const EventListScreen());
-      case eventDetails:
-        final args = settings.arguments as EventDetailsScreenArgs;
-        return MaterialPageRoute(
-          builder: (_) => EventDetailsScreen(event: args.event),
-        );
-      // case profile:
-      //   return MaterialPageRoute(builder: (_) => const ProfileScreen());
-      // case settings:
-      //   return MaterialPageRoute(builder: (_) => const SettingsScreen());
-      // case adminDashboard:
-      //   return MaterialPageRoute(builder: (_) => const AdminDashboard());
-      default:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
-    }
-  }
+final GoRouter _router = GoRouter(
+  routes: <GoRoute>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) =>
+          const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (BuildContext context, GoRouterState state) =>
+          const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/home',
+      builder: (BuildContext context, GoRouterState state) =>
+          const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/event-list',
+      builder: (BuildContext context, GoRouterState state) =>
+          const EventListScreen(),
+    ),
+    GoRoute(
+      path: '/event-details/:eventId',
+      builder: (BuildContext context, GoRouterState state) {
+        final eventId = state.pathParameters['eventId'];
+        // Fetch the event object based on the eventId
+        final event = fetchEventFromId(eventId!);
+        return EventDetailsScreen(event: event);
+      },
+    ),
+    GoRoute(
+      path: '/admin/dashboard',
+      builder: (BuildContext context, GoRouterState state) =>
+          const AdminDashboard(),
+    ),
+  ],
+);
+
+// A helper method to fetch the event object based on the eventId
+Event fetchEventFromId(String eventId) {
+  // Implement your logic to fetch the event object based on the eventId
+  return Event(
+    id: eventId,
+    title: 'Example Event',
+    description: 'This is an example event.',
+    startDate: DateTime(2024, 5, 26, 10, 30),
+    endDate: DateTime(2024, 5, 26, 10, 30),
+    location: Location(
+      name: "Example Location",
+      latitude: 000,
+      longitude: 000,
+      address: "Example Address",
+    ),
+    category: EventCategory.religious,
+    registeredUsers: [],
+    // Add other properties as needed
+  );
 }
-
-class EventDetailsScreenArgs {
-  final Event event;
-
-  EventDetailsScreenArgs({required this.event});
-}
-
-

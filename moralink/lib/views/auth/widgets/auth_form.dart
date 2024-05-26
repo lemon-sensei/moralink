@@ -29,6 +29,8 @@ class _AuthFormState extends State<AuthForm> {
               labelText: 'Email',
             ),
             validator: (value) {
+              return null;
+            
               // Email validation
             },
           ),
@@ -39,6 +41,8 @@ class _AuthFormState extends State<AuthForm> {
             ),
             obscureText: true,
             validator: (value) {
+              return null;
+            
               // Password validation
             },
           ),
