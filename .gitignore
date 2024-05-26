@@ -25,3 +25,5 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+moralink/lib/config/firebase_config.dart
+moralink/lib/firebase_options.dart
