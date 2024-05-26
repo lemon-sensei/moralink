@@ -54,11 +54,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyCtQtzN2JVzwwvA49a4A-rnJGAVAohsbe0',
-    appId: '1:162087705593:web:87d3dc6ed34cde3b3bbb28',
-    messagingSenderId: '162087705593',
-    projectId: 'moralink-app',
     authDomain: 'moralink-app.firebaseapp.com',
+    projectId: 'moralink-app',
     storageBucket: 'moralink-app.appspot.com',
     measurementId: 'G-NQYGXRMCVY',
+    appId: '1:162087705593:web:87d3dc6ed34cde3b3bbb28',
+    messagingSenderId: '162087705593',
   );
 }

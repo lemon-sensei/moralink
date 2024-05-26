@@ -37,12 +37,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Moralink')),
+        centerTitle: true,
+        title: const Text('Moralink'),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.qr_code_scanner_rounded),
-            onPressed: () {},
-          ),
+          if (authProvider.currentUser != null)
+            IconButton(
+              icon: const Icon(Icons.qr_code_scanner_rounded),
+              onPressed: () {},
+            ),
         ],
       ),
       body: eventProvider.events.isEmpty

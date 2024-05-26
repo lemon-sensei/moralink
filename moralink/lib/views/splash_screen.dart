@@ -1,6 +1,5 @@
 // ---------- Common
 import 'package:flutter/material.dart';
-import 'package:moralink/themes/colors.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';

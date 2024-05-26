@@ -22,8 +22,9 @@ Future<void> main() async {
       authDomain: FirebaseConfig.authDomain,
       projectId: FirebaseConfig.projectId,
       storageBucket: FirebaseConfig.storageBucket,
-      messagingSenderId: FirebaseConfig.messagingSenderId,
+      measurementId: FirebaseConfig.measurementId,
       appId: FirebaseConfig.appId,
+      messagingSenderId: FirebaseConfig.messagingSenderId,
     ),
   );
 

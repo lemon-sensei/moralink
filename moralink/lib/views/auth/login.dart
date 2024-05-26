@@ -1,7 +1,10 @@
+// ---------- common
 import 'package:flutter/material.dart';
-import 'package:moralink/providers/auth_provider.dart';
-import 'package:moralink/views/auth/widgets/google_sign_in_button.dart';
+import 'package:sign_in_button/sign_in_button.dart';
+
+// ---------- Provider
 import 'package:provider/provider.dart';
+import 'package:moralink/providers/auth_provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -11,21 +14,60 @@ class LoginScreen extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const GoogleSignInButton(),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: authProvider.signInWithGoogle,
-              child: const Text('Sign In with Google'),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 100,
+                ),
+                Image.asset(
+                  "assets/images/moralink_logo.png",
+                  width: 200,
+                ),
+                const SizedBox(height: 16),
+                const Text("A NEW DHARMA PROVIDER"),
+              ],
             ),
-          ],
-        ),
+          ),
+          Positioned(
+            bottom: 150,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Column(
+                children: [
+                  const Text("Continue with:"),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SignInButton(
+                    Buttons.google,
+                    onPressed: () {
+                      // Call the signInWithGoogle method from the AuthProvider
+                      authProvider.signInWithGoogle(context);
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+          const Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Column(
+                children: [
+                  Text("By using Moralink, you agree to our"),
+                  Text("Privacy Policy and Terms and Condition"),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
