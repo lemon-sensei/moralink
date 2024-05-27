@@ -1,5 +1,6 @@
 // ---------- Common
 import 'package:flutter/material.dart';
+import 'package:moralink/providers/user_provider.dart';
 import 'package:moralink/views/event/event_list.dart';
 import 'app_drawer.dart';
 
@@ -24,15 +25,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _fetchData() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
 
     authProvider.currentUser;
     await eventProvider.fetchEvents();
+    await userProvider.fetchCurrentUser();
   }
 
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
     final eventProvider = Provider.of<EventProvider>(context);
 
     return Scaffold(
@@ -50,7 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: eventProvider.events.isEmpty
           ? const Center(child: Text('No events found'))
           : const EventListScreen(),
-      drawer: AppDrawer(authProvider: authProvider),
+      drawer: AppDrawer(
+        authProvider: authProvider,
+        userProvider: userProvider,
+      ),
     );
   }
 }

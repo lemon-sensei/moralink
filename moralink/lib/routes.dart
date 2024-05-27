@@ -8,6 +8,7 @@ import 'package:moralink/views/admin/admin_dashboard.dart';
 import 'package:moralink/views/auth/login.dart';
 import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
+import 'package:moralink/views/profile/my_event.dart';
 import 'package:moralink/views/home.dart';
 import 'package:moralink/views/splash_screen.dart';
 import 'package:moralink/views/profile/user_profile.dart';
@@ -39,6 +40,11 @@ final GoRouter _router = GoRouter(
       path: '/profile',
       builder: (BuildContext context, GoRouterState state) =>
           const UserProfileScreen(),
+    ),
+    GoRoute(
+      path: '/my-event',
+      builder: (BuildContext context, GoRouterState state) =>
+      const MyEventScreen(),
     ),
     GoRoute(
       path: '/event-list',

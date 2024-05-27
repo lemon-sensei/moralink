@@ -14,6 +14,7 @@ import 'package:moralink/providers/auth_provider.dart';
 import 'package:moralink/providers/event_provider.dart';
 import 'package:moralink/providers/language_provider.dart';
 import 'package:moralink/providers/theme_provider.dart';
+import 'package:moralink/providers/user_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,6 +37,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => EventProvider()),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MoralinkApp(),
     ),

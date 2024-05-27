@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:moralink/providers/user_provider.dart';
 import '../../providers/auth_provider.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+class MyEventScreen extends StatefulWidget {
+  const MyEventScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<MyEventScreen> createState() => _MyEventScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _MyEventScreenState extends State<MyEventScreen> {
   @override
   void initState() {
     super.initState();
@@ -39,7 +39,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile'),
+        title: const Text("Registered Events"),
       ),
       body: user == null
           ? const Center(child: CircularProgressIndicator())
@@ -48,30 +48,27 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Name: ${user.name}',
-                    style: const TextStyle(fontSize: 18),
+                  const Text(
+                    'Registered Events:',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    'Email: ${user.email}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Role: ${user.role.name}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Sign out logic
-                      await authProvider.signOut();
-                      // Navigate to the /home route after successful sign out
-                      if (!context.mounted) return;
-                      context.go('/home');
-                    },
-                    child: const Text('Sign Out'),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: user.registeredEvents.length,
+                      itemBuilder: (context, index) {
+                        final eventId = user.registeredEvents[index];
+                        return ListTile(
+                          title: Text(eventId),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.qr_code),
+                            onPressed: () {
+                              // Show QR code for the event
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),

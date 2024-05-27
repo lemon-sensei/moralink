@@ -38,8 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 Image.asset(
                   "assets/images/moralink_logo.png",
-                  width: 100,
-                  height: 100,
+                  width: 75,
                 ),
                 Text(
                   "MORALINK",
