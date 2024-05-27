@@ -29,7 +29,7 @@ class EventDetailsScreen extends StatelessWidget {
               const SizedBox(height: 16.0),
               Text('Date: ${event.startDate.toString()}'),
               Text('Time: ${event.startDate.toString()}'),
-              Text('Location: ${event.location.name}'),
+              Text('Location: ${event.locationName}'),
               const SizedBox(height: 16.0),
               const Text('QR Code'),
               const QRCodeViewer(data: 'dummy_qr_code_data'),

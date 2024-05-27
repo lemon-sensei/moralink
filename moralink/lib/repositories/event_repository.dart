@@ -17,5 +17,18 @@ class EventRepository {
     });
   }
 
+  Future<void> addEvent(Event event) async {
+    try {
+      final eventData = event.toJson();
+      print('Event data: $eventData'); // Print the event data for debugging
+
+      await _firestore.collection('events').doc(event.id).set(eventData);
+    } catch (e, stackTrace) {
+      print('Error adding event: $e');
+      print('Stack trace: $stackTrace');
+      throw Exception('Error adding event: $e');
+    }
+  }
+
 // Add other event-related methods as needed
 }

@@ -49,7 +49,7 @@ class AppDrawer extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('Profile'),
               onTap: () {
-
+                context.go("/profile");
               },
             ),
           if (authProvider.currentUser != null)

@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'models/event.dart';
 import 'package:moralink/models/event_category.dart';
-import 'package:moralink/models/location.dart';
 
 // ---------- Screen
 import 'package:moralink/views/admin/admin_dashboard.dart';
@@ -11,6 +10,8 @@ import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
 import 'package:moralink/views/home.dart';
 import 'package:moralink/views/splash_screen.dart';
+import 'package:moralink/views/profile/user_profile.dart';
+import 'package:moralink/views/admin/event_management/event_create.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
@@ -35,6 +36,11 @@ final GoRouter _router = GoRouter(
           const HomeScreen(),
     ),
     GoRoute(
+      path: '/profile',
+      builder: (BuildContext context, GoRouterState state) =>
+          const UserProfileScreen(),
+    ),
+    GoRoute(
       path: '/event-list',
       builder: (BuildContext context, GoRouterState state) =>
           const EventListScreen(),
@@ -53,6 +59,11 @@ final GoRouter _router = GoRouter(
       builder: (BuildContext context, GoRouterState state) =>
           const AdminDashboard(),
     ),
+    GoRoute(
+      path: '/admin/create-event',
+      builder: (BuildContext context, GoRouterState state) =>
+          const EventCreateAdmin(),
+    ),
   ],
 );
 
@@ -63,14 +74,13 @@ Event fetchEventFromId(String eventId) {
     id: eventId,
     title: 'Example Event',
     description: 'This is an example event.',
+    thumbnail: "https://www.facebook.com/photo/?fbid=341509057548869&set=a.462114586014626",
     startDate: DateTime(2024, 5, 26, 10, 30),
     endDate: DateTime(2024, 5, 26, 10, 30),
-    location: Location(
-      name: "Example Location",
-      latitude: 000,
-      longitude: 000,
-      address: "Example Address",
-    ),
+    locationName: "Sample Location",
+    locationAddress: "Sample Location Address",
+    locationLat: 000,
+    locationLong: 000,
     category: EventCategory.religious,
     registeredUsers: [],
     // Add other properties as needed
