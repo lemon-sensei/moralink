@@ -10,6 +10,11 @@ class EventRepository {
     return snapshot.docs.map((doc) => Event.fromJson(doc.data() as Map<String, dynamic>)).toList();
   }
 
+  Future<Event> fetchEventById(String eventId) async {
+    final DocumentSnapshot snapshot = await _firestore.collection('events').doc(eventId).get();
+    return Event.fromJson(snapshot.data() as Map<String, dynamic>);
+  }
+
   Future<void> registerForEvent(Event event) async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;
     await _firestore.collection('events').doc(event.id).update({

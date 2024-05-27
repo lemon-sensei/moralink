@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:moralink/providers/theme_provider.dart';
+import 'package:moralink/themes/text_styles.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,13 +33,17 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           Center(
-            child: Column(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  "assets/images/moralink_logo_with_text.png",
-                  width: 250,
-                  height: 250,
+                  "assets/images/moralink_logo.png",
+                  width: 100,
+                  height: 100,
+                ),
+                Text(
+                  "MORALINK",
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ],
             ),

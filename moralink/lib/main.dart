@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ---------- Network
 import 'package:firebase_core/firebase_core.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moralink/config/firebase_config.dart';
 import 'package:moralink/routes.dart';
 import 'package:url_strategy/url_strategy.dart';
@@ -41,6 +42,7 @@ Future<void> main() async {
   );
 
   setPathUrlStrategy();
+  GoRouter.optionURLReflectsImperativeAPIs = true;
 }
 
 class MoralinkApp extends StatelessWidget {

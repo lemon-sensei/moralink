@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moralink/providers/event_provider.dart';
 import 'package:moralink/views/event/widgets/event_card.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class EventListScreen extends StatelessWidget {
             event: event,
             onTap: () {
               // Navigate to event details screen
+              context.push("/event-details/${event.id}");
             },
           );
         },

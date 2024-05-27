@@ -1,10 +1,7 @@
-// ---------- Common
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
 import 'package:moralink/models/event_category.dart';
 import 'package:moralink/repositories/event_repository.dart';
-
-// ---------- Screen
 import 'event_create_confirmation.dart';
 
 class EventCreateAdmin extends StatefulWidget {
@@ -40,7 +37,9 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
   }
 
   Future<void> _submitForm() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() &&
+        _startDate != null &&
+        _endDate != null) {
       final event = Event(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: _titleController.text,
@@ -63,6 +62,21 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
         context,
         MaterialPageRoute(builder: (context) => ConfirmationScreen()),
       );
+    } else {
+      if (_startDate == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please select a start date'),
+          ),
+        );
+      }
+      if (_endDate == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please select an end date'),
+          ),
+        );
+      }
     }
   }
 
@@ -102,142 +116,143 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
       appBar: AppBar(
         title: const Text('Create New Event'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextFormField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  labelText: 'Title',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Title',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a title';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a title';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  labelText: 'Description',
+                TextFormField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a description';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _thumbnailController,
-                decoration: InputDecoration(
-                  labelText: 'Thumbnail image URL',
+                TextFormField(
+                  controller: _thumbnailController,
+                  decoration: InputDecoration(
+                    labelText: 'Thumbnail image URL',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a URL to thumbnail image';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a URL to thumbnail image';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _locationNameController,
-                decoration: InputDecoration(
-                  labelText: 'Location Name',
+                TextFormField(
+                  controller: _locationNameController,
+                  decoration: InputDecoration(
+                    labelText: 'Location Name',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a location name';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a location name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _locationAddressController,
-                decoration: InputDecoration(
-                  labelText: 'Location Address',
+                TextFormField(
+                  controller: _locationAddressController,
+                  decoration: InputDecoration(
+                    labelText: 'Location Address',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a location address';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a location address';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _latitudeController,
-                decoration: InputDecoration(
-                  labelText: 'Latitude',
+                TextFormField(
+                  controller: _latitudeController,
+                  decoration: InputDecoration(
+                    labelText: 'Latitude',
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a latitude';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a latitude';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _longitudeController,
-                decoration: InputDecoration(
-                  labelText: 'Longitude',
+                TextFormField(
+                  controller: _longitudeController,
+                  decoration: InputDecoration(
+                    labelText: 'Longitude',
+                  ),
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a longitude';
+                    }
+                    return null;
+                  },
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a longitude';
-                  }
-                  return null;
-                },
-              ),
-              // Add form fields for latitude and longitude
-              DropdownButtonFormField<EventCategory>(
-                value: _category,
-                onChanged: (value) {
-                  setState(() {
-                    _category = value;
-                  });
-                },
-                items: EventCategory.values
-                    .map((category) => DropdownMenuItem(
-                          value: category,
-                          child: Text(category.name),
-                        ))
-                    .toList(),
-                decoration: InputDecoration(
-                  labelText: 'Event Category',
+                DropdownButtonFormField<EventCategory>(
+                  value: _category,
+                  onChanged: (value) {
+                    setState(() {
+                      _category = value;
+                    });
+                  },
+                  items: EventCategory.values
+                      .map((category) => DropdownMenuItem(
+                    value: category,
+                    child: Text(category.name),
+                  ))
+                      .toList(),
+                  decoration: InputDecoration(
+                    labelText: 'Event Category',
+                  ),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select a category';
+                    }
+                    return null;
+                  },
                 ),
-                validator: (value) {
-                  if (value == null) {
-                    return 'Please select a category';
-                  }
-                  return null;
-                },
-              ),
-              ListTile(
-                title: Text('Start Date'),
-                subtitle: _startDate != null
-                    ? Text(_startDate.toString())
-                    : Text('Select a start date'),
-                onTap: () => _selectStartDate(context),
-              ),
-              ListTile(
-                title: Text('End Date'),
-                subtitle: _endDate != null
-                    ? Text(_endDate.toString())
-                    : Text('Select an end date'),
-                onTap: () => _selectEndDate(context),
-              ),
-              // Add form fields for startDate and endDate
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Submit'),
-              ),
-            ],
+                ListTile(
+                  title: Text('Start Date'),
+                  subtitle: _startDate != null
+                      ? Text(_startDate.toString())
+                      : Text('Select a start date'),
+                  onTap: () => _selectStartDate(context),
+                ),
+                ListTile(
+                  title: Text('End Date'),
+                  subtitle: _endDate != null
+                      ? Text(_endDate.toString())
+                      : Text('Select an end date'),
+                  onTap: () => _selectEndDate(context),
+                ),
+                ElevatedButton(
+                  onPressed: _submitForm,
+                  child: Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

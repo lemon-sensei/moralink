@@ -14,10 +14,23 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(
-        title: Text(event.title),
-        subtitle: Text(event.description),
+      child: InkWell(
         onTap: onTap,
+        child: Column(
+          children: [
+            Image.network(
+              event.thumbnail,
+              height: 200.0, // Adjust the height as needed
+              width: double.infinity, // Set the width to match the Card width
+              fit: BoxFit.cover,
+            ),
+            ListTile(
+              title: Text(event.title),
+              subtitle: Text(event.description),
+              onTap: onTap,
+            ),
+          ],
+        ),
       ),
     );
   }

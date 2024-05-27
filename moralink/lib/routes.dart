@@ -49,9 +49,8 @@ final GoRouter _router = GoRouter(
       path: '/event-details/:eventId',
       builder: (BuildContext context, GoRouterState state) {
         final eventId = state.pathParameters['eventId'];
-        // Fetch the event object based on the eventId
-        final event = fetchEventFromId(eventId!);
-        return EventDetailsScreen(event: event);
+
+        return EventDetailsScreen(eventId: eventId!);
       },
     ),
     GoRoute(
