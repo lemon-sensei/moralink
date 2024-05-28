@@ -36,7 +36,8 @@ class AuthRepository {
         email: userCredential.user!.email ?? '',
         role: UserRole.user,
         // Set the default role to "user"
-        registeredEvents: [], // Initialize an empty list for registered events
+        registeredEvents: [],
+        attendedEvents: [], // Initialize an empty list for registered events
       );
 
       // Update the user profile in the Firestore database

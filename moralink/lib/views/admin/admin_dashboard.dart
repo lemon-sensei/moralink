@@ -2,12 +2,14 @@
 import 'package:flutter/material.dart';
 import '../app_drawer.dart';
 
+// ---------- Network
+import 'package:go_router/go_router.dart';
+
 // ---------- Provider
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/event_provider.dart';
 import '../../providers/user_provider.dart';
-
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({super.key});
@@ -48,7 +50,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             IconButton(
               icon: const Icon(Icons.qr_code_scanner_rounded),
               onPressed: () {
-
+                context.push("/admin/qr-code-scanner");
               },
             ),
         ],
@@ -57,6 +59,13 @@ class _AdminDashboardState extends State<AdminDashboard> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ElevatedButton(
+              onPressed: () {
+                context.push("/admin/create-event");
+              },
+              child: const Text("Create New Event"),
+            ),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 // Navigate to event management

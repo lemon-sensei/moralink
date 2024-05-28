@@ -24,6 +24,8 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
   DateTime? _endDate;
   EventCategory? _category;
 
+  bool _isSubmitting = false;
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -40,6 +42,11 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
     if (_formKey.currentState!.validate() &&
         _startDate != null &&
         _endDate != null) {
+      setState(() {
+        _isSubmitting =
+            true; // Set _isSubmitting to true before submitting the form
+      });
+
       final event = Event(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: _titleController.text,
@@ -53,6 +60,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
         locationLong: double.parse(_longitudeController.text),
         category: _category!,
         registeredUsers: [],
+        attendedUsers: [],
       );
 
       final eventRepository = EventRepository();
@@ -62,6 +70,11 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
         context,
         MaterialPageRoute(builder: (context) => const ConfirmationScreen()),
       );
+
+      setState(() {
+        _isSubmitting =
+            false; // Set _isSubmitting back to false after form submission is complete
+      });
     } else {
       if (_startDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -189,7 +202,8 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                   decoration: const InputDecoration(
                     labelText: 'Latitude',
                   ),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a latitude';
@@ -202,7 +216,8 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                   decoration: const InputDecoration(
                     labelText: 'Longitude',
                   ),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a longitude';
@@ -219,9 +234,9 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                   },
                   items: EventCategory.values
                       .map((category) => DropdownMenuItem(
-                    value: category,
-                    child: Text(category.name),
-                  ))
+                            value: category,
+                            child: Text(category.name),
+                          ))
                       .toList(),
                   decoration: const InputDecoration(
                     labelText: 'Event Category',
@@ -247,10 +262,16 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                       : const Text('Select an end date'),
                   onTap: () => _selectEndDate(context),
                 ),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text('Submit'),
-                ),
+                StatefulBuilder(
+                  builder: (context, setState) {
+                    return _isSubmitting
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                      onPressed: _submitForm,
+                      child: const Text('Submit'),
+                    );
+                  },
+                )
               ],
             ),
           ),

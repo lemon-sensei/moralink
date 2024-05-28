@@ -1,6 +1,8 @@
+// ---------- Common
 import 'package:flutter/material.dart';
 import 'package:moralink/models/user.dart';
 import 'package:moralink/repositories/user_repository.dart';
+import '../models/event.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserRepository _userRepository = UserRepository();
@@ -13,9 +15,18 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<AppUser> fetchUserById(String userId) async {
+    return await _userRepository.fetchUserById(userId);
+  }
+
   Future<void> updateUserProfile(AppUser updatedUser) async {
     await _userRepository.updateUserProfile(updatedUser);
     _currentUser = updatedUser;
+    notifyListeners();
+  }
+
+  Future<void> markEventAsAttended(Event event, AppUser user) async {
+    await _userRepository.markEventAsAttended(event, user);
     notifyListeners();
   }
 

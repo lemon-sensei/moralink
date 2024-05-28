@@ -17,6 +17,7 @@ class Event {
   final double locationLong;
   final EventCategory category;
   final List<String> registeredUsers;
+  final List<String> attendedUsers;
 
   Event({
     required this.id,
@@ -31,6 +32,7 @@ class Event {
     required this.locationLong,
     required this.category,
     required this.registeredUsers,
+    required this.attendedUsers
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);

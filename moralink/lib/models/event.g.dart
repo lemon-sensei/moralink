@@ -21,6 +21,9 @@ Event _$EventFromJson(Map<String, dynamic> json) => Event(
       registeredUsers: (json['registeredUsers'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      attendedUsers: (json['attendedUsers'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
@@ -36,6 +39,7 @@ Map<String, dynamic> _$EventToJson(Event instance) => <String, dynamic>{
       'locationLong': instance.locationLong,
       'category': _$EventCategoryEnumMap[instance.category]!,
       'registeredUsers': instance.registeredUsers,
+      'attendedUsers': instance.attendedUsers,
     };
 
 const _$EventCategoryEnumMap = {

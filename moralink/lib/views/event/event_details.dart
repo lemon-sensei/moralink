@@ -78,17 +78,18 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           email: currentUser.email,
           role: currentUser.role,
           registeredEvents: updatedRegisteredEvents,
+          attendedEvents: [],
         );
 
         // Update the user profile in the repository
         await userProvider.updateUserProfile(updatedUser);
 
         // Generate QR code for the user and event
-        final qrCodeRepository = QRCodeRepository();
-        final qrCode = await qrCodeRepository.generateQRCode(
-          _event.id,
-          currentUser.id,
-        );
+        // final qrCodeRepository = QRCodeRepository();
+        // final qrCode = await qrCodeRepository.generateQRCode(
+        //   _event.id,
+        //   currentUser.id,
+        // );
       }
 
       // Update the _isEnrolled flag

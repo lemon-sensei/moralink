@@ -14,6 +14,9 @@ AppUser _$AppUserFromJson(Map<String, dynamic> json) => AppUser(
       registeredEvents: (json['registeredEvents'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
+      attendedEvents: (json['attendedEvents'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$AppUserToJson(AppUser instance) => <String, dynamic>{
@@ -22,6 +25,7 @@ Map<String, dynamic> _$AppUserToJson(AppUser instance) => <String, dynamic>{
       'email': instance.email,
       'role': _$UserRoleEnumMap[instance.role]!,
       'registeredEvents': instance.registeredEvents,
+      'attendedEvents': instance.attendedEvents,
     };
 
 const _$UserRoleEnumMap = {

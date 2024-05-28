@@ -1,6 +1,10 @@
+// ---------- Common
+import 'package:moralink/models/event.dart';
+import '../models/user.dart';
+
+// ---------- Network
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:moralink/models/event.dart';
 
 class EventRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -33,6 +37,12 @@ class EventRepository {
       print('Stack trace: $stackTrace');
       throw Exception('Error adding event: $e');
     }
+  }
+
+  Future<void> markUserAsAttended(Event event, AppUser user) async {
+    await _firestore.collection('events').doc(event.id).update({
+      'attendedUsers': FieldValue.arrayUnion([user.id]),
+    });
   }
 
 // Add other event-related methods as needed

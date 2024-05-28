@@ -10,6 +10,7 @@ class AppUser {
   final String email;
   final UserRole role;
   final List<String> registeredEvents;
+  final List<String> attendedEvents;
 
   AppUser({
     required this.id,
@@ -17,6 +18,7 @@ class AppUser {
     required this.email,
     required this.role,
     required this.registeredEvents,
+    required this.attendedEvents
   });
 
   factory AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
