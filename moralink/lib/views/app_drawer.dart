@@ -45,7 +45,7 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.search_rounded),
             title: const Text("Browse events"),
             onTap: () {
-              context.push("/home");
+              context.go("/home");
             },
           ),
           if (authProvider.currentUser == null)

@@ -60,19 +60,19 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => ConfirmationScreen()),
+        MaterialPageRoute(builder: (context) => const ConfirmationScreen()),
       );
     } else {
       if (_startDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Please select a start date'),
           ),
         );
       }
       if (_endDate == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Please select an end date'),
           ),
         );
@@ -126,7 +126,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
               children: [
                 TextFormField(
                   controller: _titleController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Title',
                   ),
                   validator: (value) {
@@ -138,7 +138,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                 ),
                 TextFormField(
                   controller: _descriptionController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Description',
                   ),
                   validator: (value) {
@@ -150,7 +150,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                 ),
                 TextFormField(
                   controller: _thumbnailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Thumbnail image URL',
                   ),
                   validator: (value) {
@@ -162,7 +162,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                 ),
                 TextFormField(
                   controller: _locationNameController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Location Name',
                   ),
                   validator: (value) {
@@ -174,7 +174,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                 ),
                 TextFormField(
                   controller: _locationAddressController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Location Address',
                   ),
                   validator: (value) {
@@ -186,10 +186,10 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                 ),
                 TextFormField(
                   controller: _latitudeController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Latitude',
                   ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a latitude';
@@ -199,10 +199,10 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                 ),
                 TextFormField(
                   controller: _longitudeController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Longitude',
                   ),
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a longitude';
@@ -223,7 +223,7 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                     child: Text(category.name),
                   ))
                       .toList(),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Event Category',
                   ),
                   validator: (value) {
@@ -234,22 +234,22 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
                   },
                 ),
                 ListTile(
-                  title: Text('Start Date'),
+                  title: const Text('Start Date'),
                   subtitle: _startDate != null
                       ? Text(_startDate.toString())
-                      : Text('Select a start date'),
+                      : const Text('Select a start date'),
                   onTap: () => _selectStartDate(context),
                 ),
                 ListTile(
-                  title: Text('End Date'),
+                  title: const Text('End Date'),
                   subtitle: _endDate != null
                       ? Text(_endDate.toString())
-                      : Text('Select an end date'),
+                      : const Text('Select an end date'),
                   onTap: () => _selectEndDate(context),
                 ),
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                 ),
               ],
             ),

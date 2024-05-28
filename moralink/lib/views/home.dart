@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
 
     authProvider.currentUser;
+    if (authProvider.currentUser != null) await userProvider.fetchCurrentUser();
     await eventProvider.fetchEvents();
-    await userProvider.fetchCurrentUser();
   }
 
   @override
@@ -43,13 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Moralink'),
-        actions: [
-          if (authProvider.currentUser != null)
-            IconButton(
-              icon: const Icon(Icons.qr_code_scanner_rounded),
-              onPressed: () {},
-            ),
-        ],
       ),
       body: eventProvider.events.isEmpty
           ? const Center(child: Text('No events found'))

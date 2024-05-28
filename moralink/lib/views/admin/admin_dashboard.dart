@@ -47,7 +47,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
           if (authProvider.currentUser != null)
             IconButton(
               icon: const Icon(Icons.qr_code_scanner_rounded),
-              onPressed: () {},
+              onPressed: () {
+
+              },
             ),
         ],
       ),

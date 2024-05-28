@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 // ---------- Network
-import 'package:go_router/go_router.dart';
 
 // ---------- Provider
 import 'package:provider/provider.dart';

@@ -60,6 +60,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   shared_preferences: ^2.2.3
   sign_in_button: ^3.0.0
+  uuid: ^4.4.0
 
   # Analytics
   firebase_analytics: ^10.1.4

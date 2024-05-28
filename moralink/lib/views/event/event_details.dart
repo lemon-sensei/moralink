@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
 import '../../models/user.dart';
 import '../../repositories/event_repository.dart';
-import '../../shared/widgets/qr_code_viewer.dart';
+import '../../repositories/qr_code_repository.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// ----------Provider
+// ---------- Provider
 import 'package:provider/provider.dart';
 import '../../providers/user_provider.dart';
 
@@ -43,8 +43,11 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       setState(() {
         _event = eventData;
         _isLoading = false;
-        _isEnrolled = _event.registeredUsers
-            .contains(FirebaseAuth.instance.currentUser!.uid);
+
+        if (FirebaseAuth.instance.currentUser != null) {
+          _isEnrolled = _event.registeredUsers
+              .contains(FirebaseAuth.instance.currentUser!.uid);
+        }
       });
     } catch (e) {
       print('Error loading event details: $e');
@@ -79,6 +82,13 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
         // Update the user profile in the repository
         await userProvider.updateUserProfile(updatedUser);
+
+        // Generate QR code for the user and event
+        final qrCodeRepository = QRCodeRepository();
+        final qrCode = await qrCodeRepository.generateQRCode(
+          _event.id,
+          currentUser.id,
+        );
       }
 
       // Update the _isEnrolled flag
@@ -133,60 +143,47 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             : SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      // Display the large image from URL at the top
-                      SizedBox(
-                        height: 300,
-                        child: Image.network(
-                          _event.thumbnail,
-                          fit: BoxFit.cover,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Display the large image from URL at the top
+                        SizedBox(
+                          height: 300,
+                          child: Image.network(
+                            _event.thumbnail,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16.0),
-                      Text(_event.description),
-                      const SizedBox(height: 16.0),
-                      Text('Start Date: ${_event.startDate}'),
-                      const SizedBox(height: 8.0),
-                      Text('End Date: ${_event.endDate}'),
-                      const SizedBox(height: 16.0),
-                      Text('Location: ${_event.locationName}'),
-                      Text(_event.locationAddress),
-                      const Text('QR Code'),
-                      QRCodeViewer(data: _event.id),
-                      const SizedBox(height: 16.0),
-                      const SizedBox(height: 16.0),
-                      _isEnrolled
-                          ? const Text('You are already registered')
-                          : ElevatedButton(
-                        onPressed: () {
-                          _registerForEvent(context);
-                        },
-                        child: const Text('Enroll'),
-                      ),
-                      // Add other event details as needed
-                    ],
+                        const SizedBox(height: 16.0),
+                        Text(_event.description),
+                        const SizedBox(height: 16.0),
+                        Text('Start Date: ${_event.startDate}'),
+                        const SizedBox(height: 8.0),
+                        Text('End Date: ${_event.endDate}'),
+                        const SizedBox(height: 16.0),
+                        Text('Location: ${_event.locationName}'),
+                        Text(_event.locationAddress),
+                        const SizedBox(height: 16.0),
+
+                        if (FirebaseAuth.instance.currentUser != null)
+                          _isEnrolled
+                              ? const Text('You are already registered')
+                              : ElevatedButton(
+                                  onPressed: () {
+                                    _registerForEvent(context);
+                                  },
+                                  child: const Text('Enroll'),
+                                ),
+                        const SizedBox(height: 16.0),
+
+                        // Add other event details as needed
+                      ],
+                    ),
                   ),
                 ),
               ),
       ),
     );
-  }
-  Widget _isEnrolledButton(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final currentUser = userProvider.currentUser;
-
-    if (currentUser != null &&
-        _event.registeredUsers.contains(currentUser.id)) {
-      return const Text('You are already registered');
-    } else {
-      return ElevatedButton(
-        onPressed: () {
-          _registerForEvent(context);
-        },
-        child: const Text('Enroll'),
-      );
-    }
   }
 }
