@@ -1,5 +1,6 @@
 // ---------- Common
 import 'package:moralink/models/event.dart';
+import 'package:moralink/models/event_category.dart';
 import '../models/user.dart';
 
 // ---------- Network
@@ -16,8 +17,31 @@ class EventRepository {
 
   Future<Event> fetchEventById(String eventId) async {
     final DocumentSnapshot snapshot = await _firestore.collection('events').doc(eventId).get();
-    return Event.fromJson(snapshot.data() as Map<String, dynamic>);
+
+    if (snapshot.exists) {
+      return Event.fromJson(snapshot.data() as Map<String, dynamic>);
+    } else {
+      // Return an Event object with default values if the document does not exist
+      return Event(
+        id: '',
+        title: 'Event Not Found',
+        description: 'No event found with the specified ID',
+        thumbnail: 'https://path/to/default/thumbnail.jpg',
+        startDate: DateTime.now(),
+        endDate: DateTime.now().add(const Duration(days: 1)),
+        locationName: 'Default Location',
+        locationAddress: '',
+        locationLat: 0.0,
+        locationLong: 0.0,
+        category: EventCategory.other,
+        registeredUsers: [],
+        attendedUsers: [],
+      );
+    }
+
   }
+
+
 
   Future<void> registerForEvent(Event event) async {
     final String userId = FirebaseAuth.instance.currentUser!.uid;

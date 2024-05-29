@@ -6,6 +6,7 @@ import 'package:moralink/views/admin/admin_dashboard.dart';
 import 'package:moralink/views/auth/login.dart';
 import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
+import 'package:moralink/views/not_found_screen.dart';
 import 'package:moralink/views/profile/my_event.dart';
 import 'package:moralink/views/home.dart';
 import 'package:moralink/views/splash_screen.dart';
@@ -20,6 +21,7 @@ import 'package:go_router/go_router.dart';
 GoRouter get router => _router;
 
 final GoRouter _router = GoRouter(
+  errorBuilder: (context, state) => const NotFoundScreen(),
   routes: <GoRoute>[
     GoRoute(
       path: '/',
@@ -67,7 +69,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/admin/qr-code-scanner',
       builder: (BuildContext context, GoRouterState state) =>
-           const QRCodeScannerScreen(),
+          const QRCodeScannerScreen(),
     ),
     GoRoute(
       path: '/admin/create-event',

@@ -27,7 +27,7 @@ class EventDetailsScreen extends StatefulWidget {
 
 class _EventDetailsScreenState extends State<EventDetailsScreen> {
   final EventRepository _eventRepository = EventRepository();
-  late Event _event;
+  Event? _event;
   bool _isLoading = true;
   bool _isEnrolled = false;
 
@@ -44,8 +44,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         _event = eventData;
         _isLoading = false;
 
-        if (FirebaseAuth.instance.currentUser != null) {
-          _isEnrolled = _event.registeredUsers
+        if (FirebaseAuth.instance.currentUser != null && _event != null) {
+          _isEnrolled = _event!.registeredUsers
               .contains(FirebaseAuth.instance.currentUser!.uid);
         }
       });
@@ -58,7 +58,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   Future<void> _registerForEvent(BuildContext context) async {
     try {
       // Register the user for the event
-      await _eventRepository.registerForEvent(_event);
+      await _eventRepository.registerForEvent(_event!);
 
       // Get the current user from the UserProvider
       final userProvider = Provider.of<UserProvider>(context, listen: false);
@@ -68,7 +68,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         // Create a new list of registered events by adding the current event ID
         final updatedRegisteredEvents = [
           ...currentUser.registeredEvents,
-          _event.id,
+          _event!.id,
         ];
 
         // Create a new AppUser instance with the updated registered events
@@ -137,53 +137,69 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
               }
             }, // Use context.pop() to go back
           ),
-          title: Text(_isLoading ? 'Loading...' : _event.title),
+          title: Text(_isLoading ? 'Loading...' : _event!.title),
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
+            : _event!.id != widget.eventId || _event!.id.isEmpty
+                ? Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Display the large image from URL at the top
-                        SizedBox(
-                          height: 300,
-                          child: Image.network(
-                            _event.thumbnail,
-                            fit: BoxFit.cover,
-                          ),
+                        const Text('Event not found'),
+                        const SizedBox(height: 16.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.go('/home');
+                          },
+                          child: const Text('Go Home'),
                         ),
-                        const SizedBox(height: 16.0),
-                        Text(_event.description),
-                        const SizedBox(height: 16.0),
-                        Text('Start Date: ${_event.startDate}'),
-                        const SizedBox(height: 8.0),
-                        Text('End Date: ${_event.endDate}'),
-                        const SizedBox(height: 16.0),
-                        Text('Location: ${_event.locationName}'),
-                        Text(_event.locationAddress),
-                        const SizedBox(height: 16.0),
-
-                        if (FirebaseAuth.instance.currentUser != null)
-                          _isEnrolled
-                              ? const Text('You are already registered')
-                              : ElevatedButton(
-                                  onPressed: () {
-                                    _registerForEvent(context);
-                                  },
-                                  child: const Text('Enroll'),
-                                ),
-                        const SizedBox(height: 16.0),
-
-                        // Add other event details as needed
                       ],
                     ),
+                  )
+                : SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Display the large image from URL at the top
+                            SizedBox(
+                              height: 300,
+                              child: Image.network(
+                                _event!.thumbnail,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const SizedBox(height: 16.0),
+                            Text(_event!.description),
+                            const SizedBox(height: 16.0),
+                            Text('Start Date: ${_event!.startDate}'),
+                            const SizedBox(height: 8.0),
+                            Text('End Date: ${_event!.endDate}'),
+                            const SizedBox(height: 16.0),
+                            Text('Location: ${_event!.locationName}'),
+                            Text(_event!.locationAddress),
+                            const SizedBox(height: 16.0),
+
+                            if (FirebaseAuth.instance.currentUser != null)
+                              _isEnrolled
+                                  ? const Text('You are already registered')
+                                  : ElevatedButton(
+                                      onPressed: () {
+                                        _registerForEvent(context);
+                                      },
+                                      child: const Text('Enroll'),
+                                    ),
+                            const SizedBox(height: 16.0),
+
+                            // Add other event details as needed
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
       ),
     );
   }

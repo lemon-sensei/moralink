@@ -1,5 +1,6 @@
 // ---------- Common
 import 'package:flutter/material.dart';
+import '../../models/user_role.dart';
 import '../app_drawer.dart';
 
 // ---------- Network
@@ -29,6 +30,11 @@ class _AdminDashboardState extends State<AdminDashboard> {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
+
+    if (userProvider.currentUser?.role != UserRole.admin) {
+      context.go('/home');
+      return;
+    }
 
     authProvider.currentUser;
     await eventProvider.fetchEvents();

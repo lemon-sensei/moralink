@@ -5,7 +5,7 @@ part 'event.g.dart'; // Generated code will be written to this file
 
 @JsonSerializable()
 class Event {
-  final String id;
+  late final String id;
   final String title;
   final String description;
   final String thumbnail;
