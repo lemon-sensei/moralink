@@ -1,5 +1,6 @@
 // ---------- Common
 import 'package:flutter/material.dart';
+import 'package:moralink/config/app_config.dart';
 import 'package:moralink/models/user_role.dart';
 import '../themes/colors.dart';
 import '../themes/text_styles.dart';
@@ -45,12 +46,16 @@ class AppDrawer extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/moralink_logo.png',
-                  height: 40,
+                  height: 60,
                 ),
                 const SizedBox(height: 16),
                 Text(
                   'Welcome, ${authProvider.currentUser?.displayName ?? ''}',
                   style: textTheme.titleLarge,
+                ),
+                Text(
+                  "App version ${AppConfig.appVersion}",
+                  style: textTheme.bodySmall,
                 ),
               ],
             ),
@@ -80,20 +85,6 @@ class AppDrawer extends StatelessWidget {
               ),
               onTap: () {
                 context.push("/login");
-              },
-            ),
-          if (authProvider.currentUser != null)
-            ListTile(
-              leading: Icon(Icons.person,
-                  color: isDarkMode
-                      ? AppColors.darkIconColor
-                      : AppColors.lightIconColor),
-              title: Text(
-                'Profile',
-                style: textTheme.titleMedium,
-              ),
-              onTap: () {
-                context.push("/profile");
               },
             ),
           if (authProvider.currentUser != null)
@@ -171,6 +162,20 @@ class AppDrawer extends StatelessWidget {
           ),
           if (authProvider.currentUser != null)
             ListTile(
+              leading: Icon(Icons.person,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                'Profile',
+                style: textTheme.titleMedium,
+              ),
+              onTap: () {
+                context.push("/profile");
+              },
+            ),
+          if (authProvider.currentUser != null)
+            ListTile(
               leading: Icon(Icons.settings,
                   color: isDarkMode
                       ? AppColors.darkIconColor
@@ -201,7 +206,7 @@ class AppDrawer extends StatelessWidget {
                     style: textTheme.titleSmall,
                   )),
             ],
-          )
+          ),
         ],
       ),
     );

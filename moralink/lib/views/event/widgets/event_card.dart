@@ -1,5 +1,12 @@
+// ---------- Common
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
+import '../../../themes/colors.dart';
+
+// ---------- Provider
+import 'package:provider/provider.dart';
+import '../../../providers/theme_provider.dart';
+
 
 class EventCard extends StatelessWidget {
   final Event event;
@@ -13,21 +20,76 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+
     return Card(
       child: InkWell(
         onTap: onTap,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              event.thumbnail,
-              height: 200.0, // Adjust the height as needed
-              width: double.infinity, // Set the width to match the Card width
-              fit: BoxFit.cover,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: Image.network(
+                event.thumbnail,
+                height: 200.0,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
-            ListTile(
-              title: Text(event.title),
-              subtitle: Text(event.description),
-              onTap: onTap,
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    event.title,
+                    style: textTheme.titleLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8.0),
+                  Text(
+                    event.description,
+                    style: textTheme.bodyMedium,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today, color: isDarkMode
+                          ? AppColors.darkIconColor
+                          : AppColors.lightIconColor),
+                      const SizedBox(width: 4.0),
+                      Text(
+                        '${event.startDate.day}/${event.startDate.month}/${event.startDate.year} - ${event.endDate.day}/${event.endDate.month}/${event.endDate.year}',
+                        style: textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8.0),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, color: isDarkMode
+                          ? AppColors.darkIconColor
+                          : AppColors.lightIconColor),
+                      const SizedBox(width: 4.0),
+                      Expanded(
+                        child: Text(
+                          '${event.locationName}, ${event.locationAddress}',
+                          style: textTheme.bodyMedium,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
