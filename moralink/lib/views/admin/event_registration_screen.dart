@@ -268,7 +268,7 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
           : ElevatedButton(
         onPressed: () async {
           setState(() {
-            _isProcessingAttendance = true; 
+            _isProcessingAttendance = true;
           });
           await _markUserAsAttended();
           setState(() {
