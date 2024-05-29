@@ -39,13 +39,16 @@ class _HomeScreenState extends State<HomeScreen> {
     final userProvider = Provider.of<UserProvider>(context);
     final eventProvider = Provider.of<EventProvider>(context);
 
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Moralink'),
       ),
       body: eventProvider.events.isEmpty
-          ? const Center(child: Text('No events found'))
+          ?  Center(child: Text('No events found', style: textTheme.titleLarge,))
           : const EventListScreen(),
       drawer: AppDrawer(
         authProvider: authProvider,

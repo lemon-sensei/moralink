@@ -1,9 +1,12 @@
 // ---------- Common
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
+import 'package:moralink/providers/theme_provider.dart';
+import 'package:moralink/themes/colors.dart';
 import '../../models/user.dart';
 import '../../repositories/event_repository.dart';
-import '../../repositories/qr_code_repository.dart';
+import '../../shared/widgets/responsive_layout.dart';
+import '../../themes/text_styles.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
@@ -30,6 +33,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   Event? _event;
   bool _isLoading = true;
   bool _isEnrolled = false;
+  bool _isEnrolling = false;
 
   @override
   void initState() {
@@ -56,6 +60,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
   }
 
   Future<void> _registerForEvent(BuildContext context) async {
+    setState(() {
+      _isEnrolling = true; // Set _isEnrolling to true before registration
+    });
+
     try {
       // Register the user for the event
       await _eventRepository.registerForEvent(_event!);
@@ -118,6 +126,10 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
         ),
       );
       print('Error registering for event: $e');
+    } finally {
+      setState(() {
+        _isEnrolling = false; // Set _isEnrolling to false after registration
+      });
     }
   }
 
@@ -157,49 +169,333 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ],
                     ),
                   )
-                : SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            // Display the large image from URL at the top
-                            SizedBox(
-                              height: 300,
-                              child: Image.network(
-                                _event!.thumbnail,
-                                fit: BoxFit.cover,
+                : ResponsiveLayout(
+                    mobileBody: _buildMobileView(),
+                    tabletBody: _buildTabletView(),
+                    desktopBody: _buildDesktopView(),
+                  ),
+      ),
+    );
+  }
+
+  Widget _buildMobileView() {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Display the large image from URL at the top
+              SizedBox(
+                height: 200,
+                child: Image.network(
+                  _event!.thumbnail,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              Text(
+                _event!.description,
+                style: textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 30.0),
+              Column(
+                children: [
+                  const Icon(Icons.date_range_rounded),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '${_event!.startDate.day}/${_event!.startDate.month}/${_event!.startDate.year} - ${_event!.endDate.day}/${_event!.endDate.month}/${_event!.endDate.year}',
+                    style: textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 30),
+              Column(
+                children: [
+                  const Icon(Icons.location_on_rounded),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _event!.locationName,
+                    style: textTheme.bodyLarge,
+                  ),
+                  Text(
+                    _event!.locationAddress,
+                    style: textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 50.0),
+
+              if (FirebaseAuth.instance.currentUser != null)
+                _isEnrolled
+                    ? Column(
+                        children: [
+                          Text(
+                            'You are already registered',
+                            style: textTheme.titleLarge,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.push("/my-event");
+                            },
+                            child: Text(
+                              'Go to My Events',
+                              style: textTheme.bodyLarge,
+                            ),
+                          ),
+                        ],
+                      )
+                    : _isEnrolling
+                        ? const CircularProgressIndicator()
+                        : SizedBox(
+                            width: 200,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _registerForEvent(context);
+                              },
+                              child: Text(
+                                'Enroll',
+                                style: textTheme.bodyLarge,
                               ),
                             ),
-                            const SizedBox(height: 16.0),
-                            Text(_event!.description),
-                            const SizedBox(height: 16.0),
-                            Text('Start Date: ${_event!.startDate}'),
-                            const SizedBox(height: 8.0),
-                            Text('End Date: ${_event!.endDate}'),
-                            const SizedBox(height: 16.0),
-                            Text('Location: ${_event!.locationName}'),
-                            Text(_event!.locationAddress),
-                            const SizedBox(height: 16.0),
+                          ),
+              const SizedBox(height: 16.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-                            if (FirebaseAuth.instance.currentUser != null)
-                              _isEnrolled
-                                  ? const Text('You are already registered')
-                                  : ElevatedButton(
-                                      onPressed: () {
-                                        _registerForEvent(context);
-                                      },
-                                      child: const Text('Enroll'),
-                                    ),
-                            const SizedBox(height: 16.0),
+  Widget _buildTabletView() {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
 
-                            // Add other event details as needed
-                          ],
-                        ),
-                      ),
-                    ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Display the large image from URL at the top
+              SizedBox(
+                height: 300,
+                child: Image.network(
+                  _event!.thumbnail,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(height: 30.0),
+              Text(
+                _event!.description,
+                style: textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 30.0),
+              Column(
+                children: [
+                  const Icon(Icons.date_range_rounded),
+                  const SizedBox(
+                    height: 10,
                   ),
+                  Text(
+                    '${_event!.startDate.day}/${_event!.startDate.month}/${_event!.startDate.year} - ${_event!.endDate.day}/${_event!.endDate.month}/${_event!.endDate.year}',
+                    style: textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 30),
+              Column(
+                children: [
+                  const Icon(Icons.location_on_rounded),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    _event!.locationName,
+                    style: textTheme.bodyLarge,
+                  ),
+                  Text(
+                    _event!.locationAddress,
+                    style: textTheme.bodyLarge,
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 50.0),
+
+              if (FirebaseAuth.instance.currentUser != null)
+                _isEnrolled
+                    ? Column(
+                        children: [
+                          Text(
+                            'You are already registered',
+                            style: textTheme.titleLarge,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.push("/my-event");
+                            },
+                            child: Text(
+                              'Go to My Events',
+                              style: textTheme.bodyLarge,
+                            ),
+                          ),
+                        ],
+                      )
+                    : _isEnrolling
+                        ? const CircularProgressIndicator()
+                        : SizedBox(
+                            width: 200,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                _registerForEvent(context);
+                              },
+                              child: Text(
+                                'Enroll',
+                                style: textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
+              const SizedBox(height: 16.0),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopView() {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Center(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: 500,
+                child: Image.network(
+                  _event!.thumbnail,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(width: 32.0),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      _event!.title,
+                      style: textTheme.headlineLarge,
+                    ),
+                    const SizedBox(height: 16.0),
+                    Text(
+                      _event!.description,
+                      style: textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 30.0),
+                    Row(
+                      children: [
+                        const Icon(Icons.date_range_rounded),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          '${_event!.startDate.day}/${_event!.startDate.month}/${_event!.startDate.year} - ${_event!.endDate.day}/${_event!.endDate.month}/${_event!.endDate.year}',
+                          style: textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_rounded),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          _event!.locationName,
+                          style: textTheme.bodyLarge,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          _event!.locationAddress,
+                          style: textTheme.bodyLarge,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 50.0),
+                    if (FirebaseAuth.instance.currentUser != null)
+                      _isEnrolled
+                          ? Column(
+                              children: [
+                                Text(
+                                  'You are already registered',
+                                  style: textTheme.titleLarge,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    context.push("/my-event");
+                                  },
+                                  child: Text(
+                                    'Go to My Events',
+                                    style: textTheme.bodyLarge,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : _isEnrolling
+                              ? const CircularProgressIndicator()
+                              : SizedBox(
+                                  width: 200,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      _registerForEvent(context);
+                                    },
+                                    child: Text(
+                                      'Enroll',
+                                      style: textTheme.bodyLarge,
+                                    ),
+                                  ),
+                                ),
+                    const SizedBox(height: 16.0),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

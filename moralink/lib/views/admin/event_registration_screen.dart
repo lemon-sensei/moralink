@@ -1,9 +1,14 @@
 // ---------- Common
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:moralink/models/event.dart';
 import 'package:moralink/models/user_role.dart';
 import '../../models/user.dart';
+import '../../shared/widgets/responsive_layout.dart';
+import '../../themes/colors.dart';
+import '../../themes/text_styles.dart';
+
+// ---------- Network
+import 'package:go_router/go_router.dart';
 
 // ---------- Provider
 import 'package:moralink/providers/event_provider.dart';
@@ -31,16 +36,19 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
   AppUser? _user; // Initialize with null
   bool _isUserRegistered = false;
   bool _isUserAttended = false;
+  late Future<void> _fetchDataFuture;
+  bool _isProcessingAttendance = false;
 
   @override
   void initState() {
     super.initState();
-    _fetchData();
+    _fetchDataFuture = _fetchData();
   }
 
   Future<void> _fetchData() async {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.fetchCurrentUser();
 
     if (userProvider.currentUser?.role != UserRole.admin) {
       context.go('/event-details/${widget.eventId}');
@@ -60,50 +68,174 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.brightness == Brightness.light
+        ? AppTextStyles.lightTextTheme
+        : AppTextStyles.darkTextTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Event Registration'),
+        title: const Text('Event Registration'),
       ),
-      body: Center(
+      body: FutureBuilder<void>(
+        future: _fetchDataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          } else {
+            return ResponsiveLayout(
+              mobileBody: _buildMobileBody(textTheme),
+              tabletBody: _buildTabletBody(textTheme),
+              desktopBody: _buildDesktopBody(textTheme),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildMobileBody(TextTheme textTheme) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/moralink_logo.png",
+                width: 150,
+              ),
+              const SizedBox(height: 50),
+              if (_event != null)
+                Text(
+                  'Event: ${_event!.title}',
+                  style: textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+              const SizedBox(height: 25),
+              if (_user != null)
+                Text(
+                  "User: ${_user!.name}",
+                  style: textTheme.titleLarge,
+                ),
+              if (_event == null || _user == null)
+                Text(
+                  'Loading data...',
+                  style: textTheme.titleLarge,
+                ),
+              const SizedBox(height: 50),
+              _buildUserStatus(textTheme),
+              const SizedBox(height: 16),
+              _buildAttendanceButton(textTheme),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabletBody(TextTheme textTheme) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (_event != null) Text('Event: ${_event!.title}'),
-            if (_event == null || _user == null) Text('Loading data...'),
-            SizedBox(height: 16),
-            _buildUserStatus(),
-            SizedBox(height: 16),
-            _buildAttendanceButton(),
+            Image.asset(
+              "assets/images/moralink_logo.png",
+              width: 200,
+            ),
+            const SizedBox(height: 50),
+            if (_event != null)
+              Text(
+                'Event: ${_event!.title}',
+                style: textTheme.headlineSmall,
+              ),
+            if (_user != null)
+              Text(
+                "User: ${_user!.name}",
+                style: textTheme.headlineSmall,
+              ),
+            if (_event == null || _user == null)
+              Text(
+                'Loading data...',
+                style: textTheme.headlineSmall,
+              ),
+            const SizedBox(height: 50),
+            _buildUserStatus(textTheme),
+            const SizedBox(height: 16),
+            _buildAttendanceButton(textTheme),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildUserStatus() {
-    if (_user == null) {
-      return Text('No user exists');
-    } else if (_event == null) {
-      return Text('No event exists');
-    } else if (_isUserRegistered == false) {
-      return Text('This user has not yet registered for the event');
-    } else {
-      return Text('This user is registered for the event');
-    }
+  Widget _buildDesktopBody(TextTheme textTheme) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(64.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/moralink_logo.png",
+              width: 250,
+            ),
+            const SizedBox(height: 50),
+            if (_event != null)
+              Text(
+                'Event: ${_event!.title}',
+                style: textTheme.headlineLarge,
+              ),
+            if (_user != null)
+              Text(
+                "User: ${_user!.name}",
+                style: textTheme.headlineLarge,
+              ),
+            if (_event == null || _user == null)
+              Text(
+                'Loading data...',
+                style: textTheme.headlineLarge,
+              ),
+            const SizedBox(height: 50),
+            _buildUserStatus(textTheme),
+            const SizedBox(height: 16),
+            _buildAttendanceButton(textTheme),
+          ],
+        ),
+      ),
+    );
   }
 
-  Widget _buildAttendanceButton() {
-    if (_event == null || _user == null) {
-      return SizedBox.shrink(); // Return an empty widget if data is not loaded
-    } else if (_isUserRegistered && !_isUserAttended) {
-      return ElevatedButton(
-        onPressed: _markUserAsAttended,
-        child: Text('Mark as Attended'),
+  Widget _buildUserStatus(TextTheme textTheme) {
+    if (_user == null) {
+      return Text(
+        'No user exists',
+        style: textTheme.titleLarge,
       );
-    } else if (_isUserAttended) {
-      return Text('This user has already attended');
+    } else if (_event == null) {
+      return Text(
+        'No event exists',
+        style: textTheme.titleLarge,
+      );
+    } else if (_isUserRegistered == false) {
+      return Text(
+        'This user has not yet registered for the event',
+        style: textTheme.titleLarge,
+      );
     } else {
-      return SizedBox.shrink();
+      return Text(
+        'This user is registered for the event',
+        style: textTheme.titleLarge,
+      );
     }
   }
 
@@ -118,6 +250,46 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
       setState(() {
         _isUserAttended = true;
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User marked as attended for the event'),
+        ),
+      );
+    }
+  }
+
+  Widget _buildAttendanceButton(TextTheme textTheme) {
+    if (_event == null || _user == null) {
+      return SizedBox.shrink();
+    } else if (_isUserRegistered && !_isUserAttended) {
+      return _isProcessingAttendance
+          ? const Center(child: CircularProgressIndicator())
+          : ElevatedButton(
+        onPressed: () async {
+          setState(() {
+            _isProcessingAttendance = true; 
+          });
+          await _markUserAsAttended();
+          setState(() {
+            _isProcessingAttendance = false;
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primary,
+        ),
+        child: Text(
+          'Mark as Attended',
+          style: textTheme.titleLarge?.copyWith(color: Colors.white),
+        ),
+      );
+    } else if (_isUserAttended) {
+      return Text(
+        'This user has already attended',
+        style: textTheme.titleLarge,
+      );
+    } else {
+      return SizedBox.shrink();
     }
   }
 }

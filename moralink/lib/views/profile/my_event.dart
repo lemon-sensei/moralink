@@ -1,9 +1,10 @@
 // ---------- Common
 import 'package:flutter/material.dart';
-import 'package:moralink/providers/theme_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:universal_html/html.dart';
 import '../../models/event.dart';
+import '../../themes/text_styles.dart';
+import '../app_drawer.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,7 @@ import 'package:moralink/providers/user_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/event_provider.dart';
 import '../../providers/qr_code_provider.dart';
+import 'package:moralink/providers/theme_provider.dart';
 
 class MyEventScreen extends StatefulWidget {
   const MyEventScreen({super.key});
@@ -54,9 +56,14 @@ class _MyEventScreenState extends State<MyEventScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final user = userProvider.currentUser;
 
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final textTheme =
+        isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Registered Events"),
+        centerTitle: true,
+        title: const Text('Registered Events'),
       ),
       body: user == null
           ? const Center(child: CircularProgressIndicator())
@@ -65,10 +72,6 @@ class _MyEventScreenState extends State<MyEventScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Registered Events:',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
                   const SizedBox(height: 8),
                   Expanded(
                     child: ListView.builder(
@@ -82,6 +85,10 @@ class _MyEventScreenState extends State<MyEventScreen> {
                 ],
               ),
             ),
+      drawer: AppDrawer(
+        authProvider: authProvider,
+        userProvider: userProvider,
+      ),
     );
   }
 
@@ -91,14 +98,15 @@ class _MyEventScreenState extends State<MyEventScreen> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
 
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final textTheme =
+        isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
+
     return FutureBuilder<Event>(
       future: eventProvider.fetchEventById(eventId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return ListTile(
-            title: Text(eventId),
-            subtitle: Text('Loading...'),
-          );
+          return const ListTile();
         } else if (snapshot.hasError) {
           return ListTile(
             title: Text(eventId),
@@ -120,13 +128,16 @@ class _MyEventScreenState extends State<MyEventScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/moralink_logo.png',
-                      height: 40,
-                    ),
                     const SizedBox(height: 8),
+                    Text(event.title, style: textTheme.titleLarge),
+                    const SizedBox(height: 50),
                     QrImageView(
-                      data: "$hostDomain/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
+                      embeddedImage: const AssetImage(
+                          "assets/images/moralink_logo_white.jpg"),
+                      embeddedImageStyle:
+                          const QrEmbeddedImageStyle(size: Size(48, 48)),
+                      data:
+                          "$hostDomain/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
                       // data: "/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
                       // data: "${qrCode.eventId},${qrCode.userId}",
                       version: QrVersions.auto,
@@ -144,15 +155,59 @@ class _MyEventScreenState extends State<MyEventScreen> {
                             : Colors.black,
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      event.title,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Text(user.name, style: textTheme.titleLarge),
+                    const SizedBox(height: 50),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(Icons.location_on_rounded),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    "${event.locationName}, ${event.locationAddress}",
+                                    style: textTheme.titleSmall,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text('Event ID: ${event.id}'),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.date_range_rounded),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                            "${event.startDate.day}/${event.startDate.month}/${event.startDate.year}",
+                            style: textTheme.titleMedium),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    Text(
+                      'Event ID: ${event.id}',
+                      style: textTheme.bodySmall,
+                    ),
+                    Text(
+                      'Event ID: ${user.id}',
+                      style: textTheme.bodySmall,
+                    ),
                   ],
                 ),
               ),

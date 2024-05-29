@@ -20,12 +20,6 @@ class EventListScreen extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Event List',
-          style: textTheme.titleLarge,
-        ),
-      ),
       body: ResponsiveLayout(
         mobileBody: ListView.builder(
           itemCount: eventProvider.events.length,

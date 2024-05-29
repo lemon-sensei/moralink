@@ -33,7 +33,7 @@ class EventRepository {
         locationAddress: '',
         locationLat: 0.0,
         locationLong: 0.0,
-        category: EventCategory.other,
+        category: EventCategory.religious,
         registeredUsers: [],
         attendedUsers: [],
       );

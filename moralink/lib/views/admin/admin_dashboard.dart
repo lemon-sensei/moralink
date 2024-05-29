@@ -36,7 +36,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
       return;
     }
 
-    authProvider.currentUser;
     await eventProvider.fetchEvents();
     await userProvider.fetchCurrentUser();
   }

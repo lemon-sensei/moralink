@@ -1,8 +1,17 @@
+// ---------- Common
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
 import 'package:moralink/models/event_category.dart';
 import 'package:moralink/repositories/event_repository.dart';
+import '../../../shared/widgets/responsive_layout.dart';
+import '../../../themes/text_styles.dart';
+
+// ---------- Screen
 import 'event_create_confirmation.dart';
+
+// ---------- Provider
+import 'package:provider/provider.dart';
+import '../../../providers/theme_provider.dart';
 
 class EventCreateAdmin extends StatefulWidget {
   const EventCreateAdmin({super.key});
@@ -125,155 +134,673 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final textTheme =
+        isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create New Event'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(
-                  controller: _titleController,
-                  decoration: const InputDecoration(
-                    labelText: 'Title',
+      body: ResponsiveLayout(
+        mobileBody: _buildMobileBody(),
+        tabletBody: _buildTabletBody(),
+        desktopBody: _buildDesktopBody(),
+      ),
+    );
+  }
+
+  Widget _buildMobileBody() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final textTheme =
+        isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _titleController,
+                minLines: 2,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                minLines: 5,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _thumbnailController,
+                minLines: 2,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Thumbnail image URL',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a URL to thumbnail image';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _locationNameController,
+                decoration: InputDecoration(
+                  labelText: 'Location Name',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a location name';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _locationAddressController,
+                minLines: 2,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Location Address',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a location address';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _latitudeController,
+                decoration: InputDecoration(
+                  labelText: 'Latitude',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a latitude';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _longitudeController,
+                decoration: InputDecoration(
+                  labelText: 'Longitude',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a longitude';
+                  }
+                  return null;
+                },
+              ),
+              DropdownButtonFormField<EventCategory>(
+                value: _category,
+                onChanged: (value) {
+                  setState(() {
+                    _category = value;
+                  });
+                },
+                items: EventCategory.values
+                    .map((category) => DropdownMenuItem(
+                          value: category,
+                          child: Text(
+                            category.name,
+                            style: textTheme.bodyLarge,
+                          ),
+                        ))
+                    .toList(),
+                decoration: InputDecoration(
+                  labelText: 'Event Category',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+              ),
+              ListTile(
+                title: Text(
+                  'Start Date',
+                  style: textTheme.bodyLarge,
+                ),
+                subtitle: _startDate != null
+                    ? Text(
+                        _startDate.toString(),
+                        style: textTheme.bodyMedium,
+                      )
+                    : Text(
+                        'Select a start date',
+                        style: textTheme.bodyMedium,
+                      ),
+                onTap: () => _selectStartDate(context),
+              ),
+              ListTile(
+                title: Text(
+                  'End Date',
+                  style: textTheme.bodyLarge,
+                ),
+                subtitle: _endDate != null
+                    ? Text(
+                        _endDate.toString(),
+                        style: textTheme.bodyMedium,
+                      )
+                    : Text(
+                        'Select an end date',
+                        style: textTheme.bodyMedium,
+                      ),
+                onTap: () => _selectEndDate(context),
+              ),
+              const SizedBox(height: 30,),
+              StatefulBuilder(
+                builder: (context, setState) {
+                  return _isSubmitting
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: _submitForm,
+                          child: Text(
+                            'Submit',
+                            style: textTheme.bodyLarge,
+                          ),
+                        );
+                },
+              ),
+              const SizedBox(height: 30,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabletBody() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final textTheme =
+    isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: _titleController,
+                minLines: 2,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a title';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                minLines: 5,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a description';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _thumbnailController,
+                minLines: 2,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Thumbnail image URL',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a URL to thumbnail image';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _locationNameController,
+                decoration: InputDecoration(
+                  labelText: 'Location Name',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a location name';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _locationAddressController,
+                minLines: 2,
+                maxLines: 100,
+                decoration: InputDecoration(
+                  labelText: 'Location Address',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a location address';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _latitudeController,
+                decoration: InputDecoration(
+                  labelText: 'Latitude',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                keyboardType:
+                const TextInputType.numberWithOptions(decimal: true),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a latitude';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _longitudeController,
+                decoration: InputDecoration(
+                  labelText: 'Longitude',
+                  labelStyle: textTheme.bodyMedium,
+                ),
+                style: textTheme.bodyLarge,
+                keyboardType:
+                const TextInputType.numberWithOptions(decimal: true),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a longitude';
+                  }
+                  return null;
+                },
+              ),
+              DropdownButtonFormField<EventCategory>(
+                value: _category,
+                onChanged: (value) {
+                  setState(() {
+                    _category = value;
+                  });
+                },
+                items: EventCategory.values
+                    .map((category) => DropdownMenuItem(
+                  value: category,
+                  child: Text(
+                    category.name,
+                    style: textTheme.bodyLarge,
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a title';
-                    }
-                    return null;
-                  },
+                ))
+                    .toList(),
+                decoration: InputDecoration(
+                  labelText: 'Event Category',
+                  labelStyle: textTheme.bodyMedium,
                 ),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a description';
-                    }
-                    return null;
-                  },
+                validator: (value) {
+                  if (value == null) {
+                    return 'Please select a category';
+                  }
+                  return null;
+                },
+              ),
+              ListTile(
+                title: Text(
+                  'Start Date',
+                  style: textTheme.bodyLarge,
                 ),
-                TextFormField(
-                  controller: _thumbnailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Thumbnail image URL',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a URL to thumbnail image';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _locationNameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Location Name',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a location name';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _locationAddressController,
-                  decoration: const InputDecoration(
-                    labelText: 'Location Address',
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a location address';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _latitudeController,
-                  decoration: const InputDecoration(
-                    labelText: 'Latitude',
-                  ),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a latitude';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _longitudeController,
-                  decoration: const InputDecoration(
-                    labelText: 'Longitude',
-                  ),
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a longitude';
-                    }
-                    return null;
-                  },
-                ),
-                DropdownButtonFormField<EventCategory>(
-                  value: _category,
-                  onChanged: (value) {
-                    setState(() {
-                      _category = value;
-                    });
-                  },
-                  items: EventCategory.values
-                      .map((category) => DropdownMenuItem(
-                            value: category,
-                            child: Text(category.name),
-                          ))
-                      .toList(),
-                  decoration: const InputDecoration(
-                    labelText: 'Event Category',
-                  ),
-                  validator: (value) {
-                    if (value == null) {
-                      return 'Please select a category';
-                    }
-                    return null;
-                  },
-                ),
-                ListTile(
-                  title: const Text('Start Date'),
-                  subtitle: _startDate != null
-                      ? Text(_startDate.toString())
-                      : const Text('Select a start date'),
-                  onTap: () => _selectStartDate(context),
-                ),
-                ListTile(
-                  title: const Text('End Date'),
-                  subtitle: _endDate != null
-                      ? Text(_endDate.toString())
-                      : const Text('Select an end date'),
-                  onTap: () => _selectEndDate(context),
-                ),
-                StatefulBuilder(
-                  builder: (context, setState) {
-                    return _isSubmitting
-                        ? const CircularProgressIndicator()
-                        : ElevatedButton(
-                      onPressed: _submitForm,
-                      child: const Text('Submit'),
-                    );
-                  },
+                subtitle: _startDate != null
+                    ? Text(
+                  _startDate.toString(),
+                  style: textTheme.bodyMedium,
                 )
-              ],
-            ),
+                    : Text(
+                  'Select a start date',
+                  style: textTheme.bodyMedium,
+                ),
+                onTap: () => _selectStartDate(context),
+              ),
+              ListTile(
+                title: Text(
+                  'End Date',
+                  style: textTheme.bodyLarge,
+                ),
+                subtitle: _endDate != null
+                    ? Text(
+                  _endDate.toString(),
+                  style: textTheme.bodyMedium,
+                )
+                    : Text(
+                  'Select an end date',
+                  style: textTheme.bodyMedium,
+                ),
+                onTap: () => _selectEndDate(context),
+              ),
+              const SizedBox(height: 30,),
+              StatefulBuilder(
+                builder: (context, setState) {
+                  return _isSubmitting
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                    onPressed: _submitForm,
+                    child: Text(
+                      'Submit',
+                      style: textTheme.bodyLarge,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 30,),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDesktopBody() {
+    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final textTheme =
+        isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
+
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Form(
+          key: _formKey,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Create New Event',
+                      style: textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: _titleController,
+                      minLines: 2,
+                      maxLines: 100,
+                      decoration: InputDecoration(
+                        labelText: 'Title',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a title';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _descriptionController,
+                      minLines: 5,
+                      maxLines: 100,
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _thumbnailController,
+                      minLines: 2,
+                      maxLines: 100,
+                      decoration: InputDecoration(
+                        labelText: 'Thumbnail image URL',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a URL to thumbnail image';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 32.0),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Location Details',
+                      style: textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 16.0),
+                    TextFormField(
+                      controller: _locationNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Location Name',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a location name';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _locationAddressController,
+                      minLines: 2,
+                      maxLines: 100,
+                      decoration: InputDecoration(
+                        labelText: 'Location Address',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a location address';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _latitudeController,
+                      decoration: InputDecoration(
+                        labelText: 'Latitude',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a latitude';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _longitudeController,
+                      decoration: InputDecoration(
+                        labelText: 'Longitude',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      style: textTheme.bodyLarge,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a longitude';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 32.0),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Date and Category',
+                      style: textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 16.0),
+                    DropdownButtonFormField<EventCategory>(
+                      value: _category,
+                      onChanged: (value) {
+                        setState(() {
+                          _category = value;
+                        });
+                      },
+                      items: EventCategory.values
+                          .map((category) => DropdownMenuItem(
+                                value: category,
+                                child: Text(
+                                  category.name,
+                                  style: textTheme.bodyLarge,
+                                ),
+                              ))
+                          .toList(),
+                      decoration: InputDecoration(
+                        labelText: 'Event Category',
+                        labelStyle: textTheme.bodyMedium,
+                      ),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Please select a category';
+                        }
+                        return null;
+                      },
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Start Date',
+                        style: textTheme.bodyLarge,
+                      ),
+                      subtitle: _startDate != null
+                          ? Text(
+                              _startDate.toString(),
+                              style: textTheme.bodyMedium,
+                            )
+                          : Text(
+                              'Select a start date',
+                              style: textTheme.bodyMedium,
+                            ),
+                      onTap: () => _selectStartDate(context),
+                    ),
+                    ListTile(
+                      title: Text(
+                        'End Date',
+                        style: textTheme.bodyLarge,
+                      ),
+                      subtitle: _endDate != null
+                          ? Text(
+                              _endDate.toString(),
+                              style: textTheme.bodyMedium,
+                            )
+                          : Text(
+                              'Select an end date',
+                              style: textTheme.bodyMedium,
+                            ),
+                      onTap: () => _selectEndDate(context),
+                    ),
+                    const SizedBox(height: 30,),
+                    StatefulBuilder(
+                      builder: (context, setState) {
+                        return _isSubmitting
+                            ? const CircularProgressIndicator()
+                            : ElevatedButton(
+                          onPressed: _submitForm,
+                          child: Text(
+                            'Submit',
+                            style: textTheme.bodyLarge,
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 30,),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
