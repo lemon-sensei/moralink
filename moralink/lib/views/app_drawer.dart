@@ -1,13 +1,17 @@
 // ---------- Common
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:moralink/models/user_role.dart';
-import 'package:moralink/providers/user_provider.dart';
+import '../themes/colors.dart';
+import '../themes/text_styles.dart';
+
+// ---------- Network
+import 'package:go_router/go_router.dart';
 
 // ---------- Provider
 import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/theme_provider.dart';
+import 'package:moralink/providers/user_provider.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -21,53 +25,87 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    final userProvider = Provider.of<UserProvider>(context);
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final headerColor =
+        isDarkMode ? AppColors.darkScaffoldBackground : AppColors.primary;
+    final textTheme =
+        isDarkMode ? AppTextStyles.darkTextTheme : AppTextStyles.lightTextTheme;
 
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
+            decoration: BoxDecoration(
+              color: headerColor,
             ),
-            child: Text(
-              'Welcome, ${authProvider.currentUser?.displayName ?? ''}',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/images/moralink_logo.png',
+                  height: 40,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Welcome, ${authProvider.currentUser?.displayName ?? ''}',
+                  style: textTheme.titleLarge,
+                ),
+              ],
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.search_rounded),
-            title: const Text("Browse events"),
+            leading: Icon(Icons.search_rounded,
+                color: isDarkMode
+                    ? AppColors.darkIconColor
+                    : AppColors.lightIconColor),
+            title: Text(
+              "Browse events",
+              style: textTheme.titleMedium,
+            ),
             onTap: () {
               context.go("/home");
             },
           ),
           if (authProvider.currentUser == null)
             ListTile(
-              leading: const Icon(Icons.login_rounded),
-              title: const Text('Sign in'),
+              leading: Icon(Icons.login_rounded,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                'Sign in',
+                style: textTheme.titleMedium,
+              ),
               onTap: () {
                 context.push("/login");
               },
             ),
           if (authProvider.currentUser != null)
             ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Profile'),
+              leading: Icon(Icons.person,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                'Profile',
+                style: textTheme.titleMedium,
+              ),
               onTap: () {
                 context.push("/profile");
               },
             ),
           if (authProvider.currentUser != null)
             ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('My Events'),
+              leading: Icon(Icons.event_rounded,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                'My Events',
+                style: textTheme.titleMedium,
+              ),
               onTap: () {
                 context.push("/my-event");
               },
@@ -77,14 +115,23 @@ class AppDrawer extends StatelessWidget {
             const Divider(thickness: 1),
           if (authProvider.currentUser != null &&
               userProvider.currentUser?.role == UserRole.admin)
-            const ListTile(
-              title: Text('Admin Panel'),
+            ListTile(
+              title: Text(
+                'Admin Panel',
+                style: textTheme.titleMedium,
+              ),
             ),
           if (authProvider.currentUser != null &&
               userProvider.currentUser?.role == UserRole.admin)
             ListTile(
-              leading: const Icon(Icons.create_rounded),
-              title: const Text("Create New Event"),
+              leading: Icon(Icons.create_rounded,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                "Create New Event",
+                style: textTheme.titleMedium,
+              ),
               onTap: () {
                 context.push("/admin/create-event");
               },
@@ -92,16 +139,28 @@ class AppDrawer extends StatelessWidget {
           if (authProvider.currentUser != null &&
               userProvider.currentUser?.role == UserRole.admin)
             ListTile(
-              leading: const Icon(Icons.dashboard_rounded),
-              title: const Text("Dashboard"),
+              leading: Icon(Icons.dashboard_rounded,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                "Dashboard",
+                style: textTheme.titleMedium,
+              ),
               onTap: () {
                 context.push("/admin/dashboard");
               },
             ),
           const Divider(thickness: 1),
           ListTile(
-            leading: const Icon(Icons.brightness_6),
-            title: const Text('Dark Mode'),
+            leading: Icon(Icons.brightness_6,
+                color: isDarkMode
+                    ? AppColors.darkIconColor
+                    : AppColors.lightIconColor),
+            title: Text(
+              'Dark Mode',
+              style: textTheme.titleMedium,
+            ),
             trailing: Switch(
               value: themeProvider.themeMode == ThemeMode.dark,
               onChanged: (value) {
@@ -112,8 +171,14 @@ class AppDrawer extends StatelessWidget {
           ),
           if (authProvider.currentUser != null)
             ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
+              leading: Icon(Icons.settings,
+                  color: isDarkMode
+                      ? AppColors.darkIconColor
+                      : AppColors.lightIconColor),
+              title: Text(
+                'Settings',
+                style: textTheme.titleMedium,
+              ),
               onTap: () {
                 // Navigate to settings screen
               },
@@ -122,10 +187,19 @@ class AppDrawer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(onPressed: () {}, child: const Text("Privacy Policy")),
+              TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Privacy Policy",
+                    style: textTheme.titleSmall,
+                  )),
               const Text(" • "),
               TextButton(
-                  onPressed: () {}, child: const Text("Terms of Service")),
+                  onPressed: () {},
+                  child: Text(
+                    "Terms of Service",
+                    style: textTheme.titleSmall,
+                  )),
             ],
           )
         ],

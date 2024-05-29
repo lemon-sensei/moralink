@@ -13,6 +13,13 @@ class AppTheme {
       textTheme: AppTextStyles.lightTextTheme,
       appBarTheme: const AppBarTheme(
         color: AppColors.primary,
+        iconTheme: IconThemeData(color: AppColors.lightIconColor),
+      ),
+      iconTheme: const IconThemeData(color: AppColors.lightIconColor),
+      primaryIconTheme: const IconThemeData(color: AppColors.primary),
+      buttonTheme: const ButtonThemeData(
+        buttonColor: AppColors.primary,
+        textTheme: ButtonTextTheme.primary,
       ),
       // Add other light theme configurations
     );
@@ -27,6 +34,13 @@ class AppTheme {
       textTheme: AppTextStyles.darkTextTheme,
       appBarTheme: const AppBarTheme(
         color: AppColors.primary,
+        iconTheme: IconThemeData(color: AppColors.darkIconColor),
+      ),
+      iconTheme: const IconThemeData(color: AppColors.darkIconColor),
+      primaryIconTheme: const IconThemeData(color: AppColors.primary),
+      buttonTheme: const ButtonThemeData(
+        buttonColor: AppColors.primary,
+        textTheme: ButtonTextTheme.primary,
       ),
       // Add other dark theme configurations
     );
