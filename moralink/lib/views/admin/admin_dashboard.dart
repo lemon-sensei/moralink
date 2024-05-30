@@ -1,6 +1,7 @@
 // ---------- Common
 import 'package:flutter/material.dart';
 import '../../models/user_role.dart';
+import '../../shared/widgets/responsive_layout.dart';
 import '../app_drawer.dart';
 
 // ---------- Network
@@ -45,6 +46,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     final authProvider = Provider.of<AuthProvider>(context);
     final userProvider = Provider.of<UserProvider>(context);
     final eventProvider = Provider.of<EventProvider>(context);
+    final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -60,37 +62,235 @@ class _AdminDashboardState extends State<AdminDashboard> {
             ),
         ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                context.push("/admin/create-event");
-              },
-              child: const Text("Create New Event"),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to event management
-              },
-              child: const Text('Manage Events'),
-            ),
-            const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Navigate to user management
-              },
-              child: const Text('Manage Users'),
-            ),
-          ],
-        ),
+      body: ResponsiveLayout(
+        mobileBody: _buildMobileBody(authProvider, userProvider, textTheme),
+        tabletBody: _buildTabletBody(authProvider, userProvider, textTheme),
+        desktopBody: _buildDesktopBody(authProvider, userProvider, textTheme),
       ),
       drawer: AppDrawer(
         authProvider: authProvider,
         userProvider: userProvider,
       ),
+    );
+  }
+
+  Widget _buildMobileBody(
+    AuthProvider authProvider,
+    UserProvider userProvider,
+    TextTheme textTheme,
+  ) {
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16.0),
+            Center(
+              child: Text(
+                'Monitor Section',
+                style: textTheme.headlineSmall,
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            Center(child: _buildMonitorCards(textTheme)),
+            const SizedBox(height: 64.0),
+            Center(
+              child: Text(
+                'Management Section',
+                style: textTheme.headlineSmall,
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            Center(child: _buildManagementSection(authProvider, userProvider, textTheme)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabletBody(
+      AuthProvider authProvider,
+      UserProvider userProvider,
+      TextTheme textTheme,
+      ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Monitor',
+                  style: textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16.0),
+                _buildMonitorCards(textTheme),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Management',
+                  style: textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16.0),
+                _buildManagementSection(authProvider, userProvider, textTheme),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDesktopBody(
+      AuthProvider authProvider,
+      UserProvider userProvider,
+      TextTheme textTheme,
+      ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Monitor',
+                  style: textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16.0),
+                _buildMonitorCards(textTheme),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Management',
+                  style: textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 16.0),
+                _buildManagementSection(authProvider, userProvider, textTheme),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMonitorCards(TextTheme textTheme) {
+    return Column(
+      children: [
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Total Events',
+                  style: textTheme.titleMedium,
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '-',
+                  style: textTheme.headlineSmall,
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        Card(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Total Users',
+                  style: textTheme.titleMedium,
+                ),
+                const SizedBox(height: 8.0),
+                Text(
+                  '-',
+                  style: textTheme.headlineSmall,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildManagementSection(
+      AuthProvider authProvider,
+      UserProvider userProvider,
+      TextTheme textTheme,
+      ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Events',
+          style: textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8.0),
+        ElevatedButton(
+          onPressed: () {
+            context.push("/admin/create-event");
+          },
+          child: Text(
+            "Create New Event",
+            style: textTheme.bodyMedium,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        ElevatedButton(
+          onPressed: () {
+            // Navigate to event management
+          },
+          child: Text(
+            'Manage Events',
+            style: textTheme.bodyMedium,
+          ),
+        ),
+        const SizedBox(height: 32.0),
+        Text(
+          'Users',
+          style: textTheme.titleMedium,
+        ),
+        const SizedBox(height: 16.0),
+        ElevatedButton(
+          onPressed: () {
+            // Navigate to user management
+          },
+          child: Text(
+            'Manage Users',
+            style: textTheme.bodyMedium,
+          ),
+        ),
+      ],
     );
   }
 }

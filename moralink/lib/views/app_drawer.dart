@@ -66,7 +66,7 @@ class AppDrawer extends StatelessWidget {
                     ? AppColors.darkIconColor
                     : AppColors.lightIconColor),
             title: Text(
-              "Browse events",
+              "Browse Events",
               style: textTheme.titleMedium,
             ),
             onTap: () {
@@ -184,9 +184,6 @@ class AppDrawer extends StatelessWidget {
                 'Settings',
                 style: textTheme.titleMedium,
               ),
-              onTap: () {
-                // Navigate to settings screen
-              },
             ),
           const Divider(thickness: 1),
           Row(
