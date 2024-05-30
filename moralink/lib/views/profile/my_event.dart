@@ -4,7 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:universal_html/html.dart';
 import '../../models/event.dart';
 import '../../themes/text_styles.dart';
-import '../app_drawer.dart';
+import '../widget/app_drawer.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';

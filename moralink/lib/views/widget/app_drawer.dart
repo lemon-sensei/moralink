@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:moralink/config/app_config.dart';
 import 'package:moralink/models/user_role.dart';
-import '../themes/colors.dart';
-import '../themes/text_styles.dart';
+import '../../themes/colors.dart';
+import '../../themes/text_styles.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
 
 // ---------- Provider
 import 'package:provider/provider.dart';
-import '../providers/auth_provider.dart';
-import '../providers/theme_provider.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/theme_provider.dart';
 import 'package:moralink/providers/user_provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -185,6 +185,19 @@ class AppDrawer extends StatelessWidget {
                 style: textTheme.titleMedium,
               ),
             ),
+          ListTile(
+            leading: Icon(Icons.book_rounded,
+                color: isDarkMode
+                    ? AppColors.darkIconColor
+                    : AppColors.lightIconColor),
+            title: Text(
+              'User Manual',
+              style: textTheme.titleMedium,
+            ),
+            onTap: () {
+              context.push("/manual");
+            },
+          ),
           ListTile(
             leading: Icon(Icons.settings,
                 color: isDarkMode

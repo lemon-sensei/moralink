@@ -1,12 +1,10 @@
 // ---------- Common
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
-import 'package:moralink/providers/theme_provider.dart';
 import 'package:moralink/themes/colors.dart';
 import '../../models/user.dart';
 import '../../repositories/event_repository.dart';
 import '../../shared/widgets/responsive_layout.dart';
-import '../../themes/text_styles.dart';
 
 // ---------- Network
 import 'package:go_router/go_router.dart';
@@ -256,6 +254,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       onPressed: () {
                         context.push("/login");
                       },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary),
                       child: Text(
                         'Sign in',
                         style: textTheme.bodyLarge,
@@ -278,6 +278,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             onPressed: () {
                               context.push("/my-event");
                             },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary),
                             child: Text(
                               'Go to My Events',
                               style: textTheme.bodyLarge,
@@ -294,6 +296,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               onPressed: () {
                                 _registerForEvent(context);
                               },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary),
                               child: Text(
                                 'Enroll',
                                 style: textTheme.bodyLarge,
@@ -386,6 +390,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       onPressed: () {
                         context.push("/login");
                       },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary),
                       child: Text(
                         'Sign in',
                         style: textTheme.bodyLarge,
@@ -408,6 +414,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             onPressed: () {
                               context.push("/my-event");
                             },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary),
                             child: Text(
                               'Go to My Events',
                               style: textTheme.bodyLarge,
@@ -424,6 +432,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               onPressed: () {
                                 _registerForEvent(context);
                               },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary),
                               child: Text(
                                 'Enroll',
                                 style: textTheme.bodyLarge,
@@ -533,6 +543,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               onPressed: () {
                                 context.push("/login");
                               },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primary),
                               child: Text(
                                 'Sign in',
                                 style: textTheme.bodyLarge,
@@ -561,6 +573,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     onPressed: () {
                                       context.push("/my-event");
                                     },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primary),
                                     child: Text(
                                       'Go to My Events',
                                       style: textTheme.bodyLarge,
@@ -579,6 +593,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       onPressed: () {
                                         _registerForEvent(context);
                                       },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.primary),
                                       child: Text(
                                         'Enroll',
                                         style: textTheme.bodyLarge,

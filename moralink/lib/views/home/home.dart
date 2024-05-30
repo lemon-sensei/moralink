@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:moralink/providers/user_provider.dart';
 import 'package:moralink/views/event/event_list.dart';
-import 'app_drawer.dart';
+import '../widget/app_drawer.dart';
 
 // ---------- Provider
 import 'package:provider/provider.dart';

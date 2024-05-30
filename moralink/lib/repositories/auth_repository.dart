@@ -34,15 +34,30 @@ class AuthRepository {
         id: userCredential.user!.uid,
         name: userCredential.user!.displayName ?? '',
         email: userCredential.user!.email ?? '',
-        photoUrl: userCredential.user!.photoURL, // Add this line
+        photoUrl: userCredential.user!.photoURL,
         role: UserRole.user,
-        // Set the default role to "user"
         registeredEvents: [],
         attendedEvents: [], // Initialize an empty list for registered events
       );
 
       // Update the user profile in the Firestore database
       await _userRepository.updateUserProfile(newUser);
+    } else {
+      // If the user exists, update the displayName and photoURL
+      final updatedUser = AppUser(
+        id: existingUser.id,
+        name: userCredential.user!.displayName ?? existingUser.name,
+        email: existingUser.email,
+        photoUrl: userCredential.user!.photoURL ?? existingUser.photoUrl,
+        role: existingUser.role,
+        registeredEvents: existingUser.registeredEvents,
+        attendedEvents: existingUser.attendedEvents,
+        passportNumber: existingUser.passportNumber,
+        nameOnPassport: existingUser.nameOnPassport,
+      );
+
+      // Update the user profile in the Firestore database
+      await _userRepository.updateUserProfile(updatedUser);
     }
 
     return userCredential;

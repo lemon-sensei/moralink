@@ -6,12 +6,13 @@ import 'package:moralink/views/admin/admin_dashboard.dart';
 import 'package:moralink/views/auth/login.dart';
 import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
-import 'package:moralink/views/not_found_screen.dart';
+import 'package:moralink/views/manual/user_manual_screen.dart';
+import 'package:moralink/views/not_found/not_found_screen.dart';
 import 'package:moralink/views/profile/my_event.dart';
-import 'package:moralink/views/home.dart';
+import 'package:moralink/views/home/home.dart';
 import 'package:moralink/views/settings/setting_screen.dart';
-import 'package:moralink/views/about_screen.dart';
-import 'package:moralink/views/splash_screen.dart';
+import 'package:moralink/views/about/about_screen.dart';
+import 'package:moralink/views/splash/splash_screen.dart';
 import 'package:moralink/views/profile/user_profile.dart';
 import 'package:moralink/views/admin/event_management/event_create.dart';
 import 'package:moralink/views/admin/event_registration_screen.dart';
@@ -67,6 +68,11 @@ final GoRouter _router = GoRouter(
       path: '/setting',
       builder: (BuildContext context, GoRouterState state) =>
           const SettingScreen(),
+    ),
+    GoRoute(
+      path: '/manual',
+      builder: (BuildContext context, GoRouterState state) =>
+      const UserManualScreen(),
     ),
     GoRoute(
       path: '/about',

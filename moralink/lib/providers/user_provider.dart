@@ -21,7 +21,8 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> updateUserProfile(AppUser updatedUser) async {
-    await _userRepository.updateUserProfile(updatedUser);
+    final userRepository = UserRepository();
+    await userRepository.updateUserProfile(updatedUser);
     _currentUser = updatedUser;
     notifyListeners();
   }
