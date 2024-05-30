@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
 import 'package:moralink/models/event_category.dart';
 import 'package:moralink/repositories/event_repository.dart';
+import '../../../models/user_role.dart';
 import '../../../shared/widgets/responsive_layout.dart';
 import '../../../themes/text_styles.dart';
+
+// ---------- Network
+import 'package:go_router/go_router.dart';
 
 // ---------- Screen
 import 'event_create_confirmation.dart';
 
 // ---------- Provider
+import '../../../providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/theme_provider.dart';
 
@@ -34,6 +39,21 @@ class _EventCreateAdminState extends State<EventCreateAdmin> {
   EventCategory? _category;
 
   bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAdmin();
+  }
+
+  Future<void> _checkAdmin() async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    if (userProvider.currentUser?.role != UserRole.admin) {
+      context.go('/home');
+      return;
+    }
+  }
 
   @override
   void dispose() {

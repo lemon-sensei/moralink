@@ -135,7 +135,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                       embeddedImage: const AssetImage(
                           "assets/images/moralink_logo_white.jpg"),
                       embeddedImageStyle:
-                          const QrEmbeddedImageStyle(size: Size(48, 48)),
+                          const QrEmbeddedImageStyle(size: Size(36, 36)),
                       data:
                           "$hostDomain/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
                       // data: "/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
@@ -143,13 +143,13 @@ class _MyEventScreenState extends State<MyEventScreen> {
                       version: QrVersions.auto,
                       size: 200,
                       dataModuleStyle: QrDataModuleStyle(
-                        dataModuleShape: QrDataModuleShape.square,
+                        dataModuleShape: QrDataModuleShape.circle,
                         color: themeProvider.themeMode.name == "dark"
                             ? Colors.white
                             : Colors.black,
                       ),
                       eyeStyle: QrEyeStyle(
-                        eyeShape: QrEyeShape.square,
+                        eyeShape: QrEyeShape.circle,
                         color: themeProvider.themeMode.name == "dark"
                             ? Colors.white
                             : Colors.black,

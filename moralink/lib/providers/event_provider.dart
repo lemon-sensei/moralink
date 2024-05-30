@@ -17,7 +17,7 @@ class EventProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _events = await _eventRepository.fetchEvents();
+      _events = (await _eventRepository.fetchEvents()).reversed.toList();
     } catch (e) {
       // Handle any errors
       print('Error fetching events: $e');
