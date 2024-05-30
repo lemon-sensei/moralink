@@ -52,13 +52,15 @@ class EventCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8.0),
+                  const Divider(thickness: 1,),
+                  const SizedBox(height: 8.0),
                   Text(
                     event.description,
                     style: textTheme.bodyMedium,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(height: 30.0),
                   Row(
                     children: [
                       Icon(Icons.calendar_today, color: isDarkMode

@@ -185,6 +185,19 @@ class AppDrawer extends StatelessWidget {
                 style: textTheme.titleMedium,
               ),
             ),
+          ListTile(
+            leading: Icon(Icons.settings,
+                color: isDarkMode
+                    ? AppColors.darkIconColor
+                    : AppColors.lightIconColor),
+            title: Text(
+              'About Us',
+              style: textTheme.titleMedium,
+            ),
+            onTap: () {
+              context.push("/about");
+            },
+          ),
           const Divider(thickness: 1),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

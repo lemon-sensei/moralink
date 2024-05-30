@@ -218,7 +218,6 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
               const SizedBox(height: 30),
               Column(
-
                 children: [
                   const Icon(Icons.location_on_rounded),
                   const SizedBox(
@@ -236,7 +235,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   ),
                 ],
               ),
-
+              const SizedBox(height: 50.0),
+              const Divider(
+                thickness: 1,
+                indent: 50,
+                endIndent: 50,
+              ),
               const SizedBox(height: 50.0),
               if (FirebaseAuth.instance.currentUser == null)
                 Column(
@@ -361,7 +365,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   ),
                 ],
               ),
-
+              const SizedBox(height: 50.0),
+              const Divider(
+                thickness: 1,
+                indent: 50,
+                endIndent: 50,
+              ),
               const SizedBox(height: 50.0),
               if (FirebaseAuth.instance.currentUser == null)
                 Column(
@@ -499,6 +508,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                       ],
                     ),
                     const SizedBox(height: 50.0),
+                    const Divider(
+                      thickness: 1,
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    const SizedBox(height: 50.0),
                     if (FirebaseAuth.instance.currentUser == null)
                       Column(
                         children: [
@@ -557,7 +572,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                           : _isEnrolling
                               ? const CircularProgressIndicator()
                               : Center(
-                                child: SizedBox(
+                                  child: SizedBox(
                                     width: 200,
                                     height: 50,
                                     child: ElevatedButton(
@@ -570,7 +585,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       ),
                                     ),
                                   ),
-                              ),
+                                ),
                     const SizedBox(height: 16.0),
                   ],
                 ),

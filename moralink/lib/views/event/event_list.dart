@@ -21,7 +21,7 @@ class EventListScreen extends StatelessWidget {
 
     return Scaffold(
       body: ResponsiveLayout(
-        mobileBody: ListView.builder(
+        mobileBody: ListView.separated(
           itemCount: eventProvider.events.length,
           itemBuilder: (context, index) {
             final event = eventProvider.events[index];
@@ -32,6 +32,9 @@ class EventListScreen extends StatelessWidget {
                 context.push("/event-details/${event.id}");
               },
             );
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(height: 16.0); // Adjust the height as needed
           },
         ),
         tabletBody: GridView.builder(

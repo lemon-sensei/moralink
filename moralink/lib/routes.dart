@@ -9,6 +9,8 @@ import 'package:moralink/views/event/event_list.dart';
 import 'package:moralink/views/not_found_screen.dart';
 import 'package:moralink/views/profile/my_event.dart';
 import 'package:moralink/views/home.dart';
+import 'package:moralink/views/settings/setting_screen.dart';
+import 'package:moralink/views/about_screen.dart';
 import 'package:moralink/views/splash_screen.dart';
 import 'package:moralink/views/profile/user_profile.dart';
 import 'package:moralink/views/admin/event_management/event_create.dart';
@@ -60,6 +62,16 @@ final GoRouter _router = GoRouter(
 
         return EventDetailsScreen(eventId: eventId!);
       },
+    ),
+    GoRoute(
+      path: '/setting',
+      builder: (BuildContext context, GoRouterState state) =>
+          const SettingScreen(),
+    ),
+    GoRoute(
+      path: '/about',
+      builder: (BuildContext context, GoRouterState state) =>
+          const AboutScreen(),
     ),
     GoRoute(
       path: '/admin/dashboard',
