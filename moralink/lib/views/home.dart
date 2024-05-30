@@ -47,9 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         title: const Text('Moralink'),
       ),
-      body: eventProvider.events.isEmpty
-          ?  Center(child: Text('No events found', style: textTheme.titleLarge,))
-          : const EventListScreen(),
+      body: eventProvider.isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : eventProvider.events.isEmpty
+              ? Center(
+                  child: Text(
+                    'No events found',
+                    style: textTheme.titleLarge,
+                  ),
+                )
+              : const EventListScreen(),
       drawer: AppDrawer(
         authProvider: authProvider,
         userProvider: userProvider,

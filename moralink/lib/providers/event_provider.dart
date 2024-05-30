@@ -7,12 +7,24 @@ import '../models/user.dart';
 class EventProvider extends ChangeNotifier {
   final EventRepository _eventRepository = EventRepository();
   List<Event> _events = [];
+  bool _isLoading = true;
 
   List<Event> get events => _events;
+  bool get isLoading => _isLoading;
 
   Future<void> fetchEvents() async {
-    _events = await _eventRepository.fetchEvents();
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      _events = await _eventRepository.fetchEvents();
+    } catch (e) {
+      // Handle any errors
+      print('Error fetching events: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<Event> fetchEventById(String eventId) async {

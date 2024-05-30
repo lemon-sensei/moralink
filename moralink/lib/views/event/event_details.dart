@@ -218,6 +218,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
 
               const SizedBox(height: 30),
               Column(
+
                 children: [
                   const Icon(Icons.location_on_rounded),
                   const SizedBox(
@@ -226,16 +227,38 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text(
                     _event!.locationName,
                     style: textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     _event!.locationAddress,
                     style: textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
 
               const SizedBox(height: 50.0),
-
+              if (FirebaseAuth.instance.currentUser == null)
+                Column(
+                  children: [
+                    Text(
+                      'Please login to participate the event',
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.push("/login");
+                      },
+                      child: Text(
+                        'Sign in',
+                        style: textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                ),
               if (FirebaseAuth.instance.currentUser != null)
                 _isEnrolled
                     ? Column(
@@ -329,16 +352,38 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   Text(
                     _event!.locationName,
                     style: textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     _event!.locationAddress,
                     style: textTheme.bodyLarge,
+                    textAlign: TextAlign.center,
                   ),
                 ],
               ),
 
               const SizedBox(height: 50.0),
-
+              if (FirebaseAuth.instance.currentUser == null)
+                Column(
+                  children: [
+                    Text(
+                      'Please login to participate the event',
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.push("/login");
+                      },
+                      child: Text(
+                        'Sign in',
+                        style: textTheme.bodyLarge,
+                      ),
+                    ),
+                  ],
+                ),
               if (FirebaseAuth.instance.currentUser != null)
                 _isEnrolled
                     ? Column(
@@ -392,7 +437,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Center(
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: SizedBox(
@@ -407,7 +452,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       _event!.title,
@@ -441,6 +486,7 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         Text(
                           _event!.locationName,
                           style: textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(
                           width: 10,
@@ -448,47 +494,83 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                         Text(
                           _event!.locationAddress,
                           style: textTheme.bodyLarge,
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
                     const SizedBox(height: 50.0),
+                    if (FirebaseAuth.instance.currentUser == null)
+                      Column(
+                        children: [
+                          Center(
+                            child: Text(
+                              'Please login to participate the event',
+                              style: textTheme.titleLarge,
+                            ),
+                          ),
+                          const Center(
+                            child: SizedBox(
+                              height: 10,
+                            ),
+                          ),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                context.push("/login");
+                              },
+                              child: Text(
+                                'Sign in',
+                                style: textTheme.bodyLarge,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     if (FirebaseAuth.instance.currentUser != null)
                       _isEnrolled
                           ? Column(
                               children: [
-                                Text(
-                                  'You are already registered',
-                                  style: textTheme.titleLarge,
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context.push("/my-event");
-                                  },
+                                Center(
                                   child: Text(
-                                    'Go to My Events',
-                                    style: textTheme.bodyLarge,
+                                    'You are already registered',
+                                    style: textTheme.titleLarge,
+                                  ),
+                                ),
+                                const Center(
+                                  child: SizedBox(
+                                    height: 10,
+                                  ),
+                                ),
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      context.push("/my-event");
+                                    },
+                                    child: Text(
+                                      'Go to My Events',
+                                      style: textTheme.bodyLarge,
+                                    ),
                                   ),
                                 ),
                               ],
                             )
                           : _isEnrolling
                               ? const CircularProgressIndicator()
-                              : SizedBox(
-                                  width: 200,
-                                  height: 50,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      _registerForEvent(context);
-                                    },
-                                    child: Text(
-                                      'Enroll',
-                                      style: textTheme.bodyLarge,
+                              : Center(
+                                child: SizedBox(
+                                    width: 200,
+                                    height: 50,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        _registerForEvent(context);
+                                      },
+                                      child: Text(
+                                        'Enroll',
+                                        style: textTheme.bodyLarge,
+                                      ),
                                     ),
                                   ),
-                                ),
+                              ),
                     const SizedBox(height: 16.0),
                   ],
                 ),

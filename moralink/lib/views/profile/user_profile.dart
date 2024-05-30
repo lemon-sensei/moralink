@@ -53,11 +53,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               const SizedBox(height: 32),
               Center(
                 child: CircleAvatar(
-                  backgroundColor: Colors.grey,
+                  backgroundColor: Colors.transparent,
                   radius: 60,
                   backgroundImage: user.photoUrl != null
                       ? NetworkImage(user.photoUrl!)
-                      : const AssetImage('assets/images/moralink_logo.jpg') as ImageProvider,
+                      : const AssetImage('assets/images/moralink_logo.png') as ImageProvider,
                 ),
               ),
               const SizedBox(height: 32),
