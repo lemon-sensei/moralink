@@ -1,4 +1,5 @@
 // ---------- Common
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
 import 'package:moralink/models/user_role.dart';
@@ -48,11 +49,18 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
   Future<void> _fetchData() async {
     final eventProvider = Provider.of<EventProvider>(context, listen: false);
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    await userProvider.fetchCurrentUser();
+    final FirebaseAuth auth = FirebaseAuth.instance;
 
-    if (userProvider.currentUser?.role != UserRole.admin) {
+    if (auth.currentUser == null) {
       context.go('/event-details/${widget.eventId}');
       return;
+    } else {
+      await userProvider.fetchCurrentUser();
+
+      if (userProvider.currentUser?.role != UserRole.admin) {
+        context.go('/event-details/${widget.eventId}');
+        return;
+      }
     }
 
     _event = await eventProvider.fetchEventById(widget.eventId);
@@ -115,14 +123,14 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
               const SizedBox(height: 50),
               if (_event != null)
                 Text(
-                  'Event: ${_event!.title}',
+                  _event!.title,
                   style: textTheme.titleLarge,
                   textAlign: TextAlign.center,
                 ),
               const SizedBox(height: 25),
               if (_user != null)
                 Text(
-                  "User: ${_user!.name}",
+                  "- ${_user!.name} -",
                   style: textTheme.titleLarge,
                 ),
               if (_event == null || _user == null)
@@ -150,17 +158,18 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
           children: [
             Image.asset(
               "assets/images/moralink_logo.png",
-              width: 200,
+              width: 150,
             ),
             const SizedBox(height: 50),
             if (_event != null)
               Text(
-                'Event: ${_event!.title}',
+                _event!.title,
                 style: textTheme.headlineSmall,
               ),
+            const SizedBox(height: 25),
             if (_user != null)
               Text(
-                "User: ${_user!.name}",
+                "- ${_user!.name} -",
                 style: textTheme.headlineSmall,
               ),
             if (_event == null || _user == null)
@@ -187,17 +196,18 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
           children: [
             Image.asset(
               "assets/images/moralink_logo.png",
-              width: 250,
+              width: 150,
             ),
             const SizedBox(height: 50),
             if (_event != null)
               Text(
-                'Event: ${_event!.title}',
+                _event!.title,
                 style: textTheme.headlineLarge,
               ),
+            const SizedBox(height: 25),
             if (_user != null)
               Text(
-                "User: ${_user!.name}",
+                "- ${_user!.name} -",
                 style: textTheme.headlineLarge,
               ),
             if (_event == null || _user == null)
@@ -219,22 +229,22 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
     if (_user == null) {
       return Text(
         'No user exists',
-        style: textTheme.titleLarge,
+        style: textTheme.titleMedium,
       );
     } else if (_event == null) {
       return Text(
         'No event exists',
-        style: textTheme.titleLarge,
+        style: textTheme.titleMedium,
       );
     } else if (_isUserRegistered == false) {
       return Text(
         'This user has not yet registered for the event',
-        style: textTheme.titleLarge,
+        style: textTheme.titleMedium,
       );
     } else {
       return Text(
-        'This user is registered for the event',
-        style: textTheme.titleLarge,
+        'This user has registered for this event',
+        style: textTheme.titleMedium,
       );
     }
   }
@@ -266,27 +276,36 @@ class _EventRegistrationScreenState extends State<EventRegistrationScreen> {
       return _isProcessingAttendance
           ? const Center(child: CircularProgressIndicator())
           : ElevatedButton(
-        onPressed: () async {
-          setState(() {
-            _isProcessingAttendance = true;
-          });
-          await _markUserAsAttended();
-          setState(() {
-            _isProcessingAttendance = false;
-          });
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-        ),
-        child: Text(
-          'Mark as Attended',
-          style: textTheme.titleLarge?.copyWith(color: Colors.white),
-        ),
-      );
+              onPressed: () async {
+                setState(() {
+                  _isProcessingAttendance = true;
+                });
+                await _markUserAsAttended();
+                setState(() {
+                  _isProcessingAttendance = false;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+              ),
+              child: Text(
+                'Mark as Attended',
+                style: textTheme.titleLarge?.copyWith(color: Colors.white),
+              ),
+            );
     } else if (_isUserAttended) {
-      return Text(
-        'This user has already attended',
-        style: textTheme.titleLarge,
+      return Column(
+        children: [
+          Text(
+            'This user has already attended',
+            style: textTheme.titleMedium,
+          ),
+          const SizedBox(height: 100,),
+          Text(
+            'Please close this tab manually!',
+            style: textTheme.titleLarge,
+          ),
+        ],
       );
     } else {
       return SizedBox.shrink();

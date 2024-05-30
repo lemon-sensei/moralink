@@ -6,6 +6,7 @@ import '../models/event.dart';
 
 class UserProvider extends ChangeNotifier {
   final UserRepository _userRepository = UserRepository();
+
   AppUser? _currentUser;
 
   AppUser? get currentUser => _currentUser;
