@@ -34,6 +34,7 @@ class AuthRepository {
         id: userCredential.user!.uid,
         name: userCredential.user!.displayName ?? '',
         email: userCredential.user!.email ?? '',
+        photoUrl: userCredential.user!.photoURL, // Add this line
         role: UserRole.user,
         // Set the default role to "user"
         registeredEvents: [],

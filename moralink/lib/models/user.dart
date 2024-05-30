@@ -8,6 +8,7 @@ class AppUser {
   final String id;
   final String name;
   final String email;
+  final String? photoUrl;
   final UserRole role;
   final List<String> registeredEvents;
   final List<String> attendedEvents;
@@ -16,6 +17,7 @@ class AppUser {
     required this.id,
     required this.name,
     required this.email,
+    this.photoUrl,
     required this.role,
     required this.registeredEvents,
     required this.attendedEvents
