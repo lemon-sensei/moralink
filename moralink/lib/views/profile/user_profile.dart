@@ -156,6 +156,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               ),
                               const SizedBox(height: 16),
                               ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue, // Set the background color to blue
+                                ),
                                 onPressed: () async {
                                   // Update the user profile in the database
                                   await userProvider.updateUserProfile(user);
@@ -167,6 +170,153 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   'Update',
                                   style: textTheme.bodyMedium?.copyWith(
                                     color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: 400,
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Center(
+                                child: Text(
+                                  'Physical Address',
+                                  style: textTheme.titleLarge,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.addressLine1 ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'Address Line 1',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the address line 1 in the user object
+                                  user.addressLine1 = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.addressLine2 ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'Address Line 2',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the address line 2 in the user object
+                                  user.addressLine2 = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.addressCity ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'City',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the city in the user object
+                                  user.addressCity = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.addressState ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'State/Province',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the state/province in the user object
+                                  user.addressState = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.addressZipCode ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'ZIP/Postal Code',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the ZIP/postal code in the user object
+                                  user.addressZipCode = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.addressCountry ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'Country',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  user.addressCountry = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              Center(
+                                child: Visibility(
+                                  visible: _showSuccessMessage,
+                                  child: Text(
+                                    'Information updated successfully!',
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Center(
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.blue, // Set the background color to blue
+                                  ),
+                                  onPressed: () async {
+                                    // Update the user profile in the database
+                                    await userProvider.updateUserProfile(user);
+                                    setState(() {
+                                      _showSuccessMessage = true;
+                                    });
+                                  },
+                                  child: Text(
+                                    'Update',
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -194,6 +344,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             textTheme.labelLarge?.copyWith(color: Colors.white),
                       ),
                     ),
+                    const SizedBox(height: 32),
                   ],
                 ),
               ),

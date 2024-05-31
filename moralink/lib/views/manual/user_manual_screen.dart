@@ -48,7 +48,7 @@ class UserManualScreen extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    'Software User Guide',
+                    'User Guide',
                     style: textTheme.headlineLarge?.copyWith(color: fontColor),
                   ),
                 ),

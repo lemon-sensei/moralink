@@ -14,6 +14,12 @@ class AppUser {
   final List<String> attendedEvents;
   String? _passportNumber;
   String? _nameOnPassport;
+  String? _addressLine1;
+  String? _addressLine2;
+  String? _addressCity;
+  String? _addressState;
+  String? _addressZipCode;
+  String? _addressCountry;
 
   String? get passportNumber => _passportNumber;
   set passportNumber(String? value) {
@@ -23,6 +29,36 @@ class AppUser {
   String? get nameOnPassport => _nameOnPassport;
   set nameOnPassport(String? value) {
     _nameOnPassport = value;
+  }
+
+  String? get addressLine1 => _addressLine1;
+  set addressLine1(String? value) {
+    _addressLine1 = value;
+  }
+
+  String? get addressLine2 => _addressLine2;
+  set addressLine2(String? value) {
+    _addressLine2 = value;
+  }
+
+  String? get addressCity => _addressCity;
+  set addressCity(String? value) {
+    _addressCity = value;
+  }
+
+  String? get addressState => _addressState;
+  set addressState(String? value) {
+    _addressState = value;
+  }
+
+  String? get addressZipCode => _addressZipCode;
+  set addressZipCode(String? value) {
+    _addressZipCode = value;
+  }
+
+  String? get addressCountry => _addressCountry;
+  set addressCountry(String? value) {
+    _addressCountry = value;
   }
 
   AppUser({
@@ -35,9 +71,23 @@ class AppUser {
     required this.attendedEvents,
     passportNumber,
     nameOnPassport,
+    addressLine1,
+    addressLine2,
+    addressCity,
+    addressState,
+    addressZipCode,
+    addressCountry
+
   }) {
     _passportNumber = passportNumber;
     _nameOnPassport = nameOnPassport;
+
+    _addressLine1 = addressLine1;
+    _addressLine2 = addressLine2;
+    _addressCity = addressCity;
+    _addressState = addressState;
+    _addressZipCode = addressZipCode;
+    _addressCountry = addressCountry;
   }
 
   factory AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
