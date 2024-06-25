@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ---------- Screen
 import 'package:moralink/views/admin/admin_dashboard.dart';
+import 'package:moralink/views/admin/event_management/event_edit.dart';
 import 'package:moralink/views/auth/login.dart';
 import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
@@ -72,7 +73,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/manual',
       builder: (BuildContext context, GoRouterState state) =>
-      const UserManualScreen(),
+          const UserManualScreen(),
     ),
     GoRoute(
       path: '/about',
@@ -93,6 +94,11 @@ final GoRouter _router = GoRouter(
       path: '/admin/create-event',
       builder: (BuildContext context, GoRouterState state) =>
           const EventCreateAdmin(),
+    ),
+    GoRoute(
+      path: '/admin/edit-event/:eventId',
+      builder: (BuildContext context, GoRouterState state) =>
+          EventEditAdmin(eventId: state.pathParameters['eventId']!),
     ),
     GoRoute(
       path: '/admin/event-registration/:eventId/:userId',

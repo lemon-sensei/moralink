@@ -97,9 +97,7 @@ flutter:
     - assets/images/moralink_logo_with_text.png
 
 
-    - assets/manual/login-screen.png
-    - assets/manual/profile-screen.png
-
+    - assets/manual/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

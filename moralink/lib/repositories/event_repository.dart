@@ -69,5 +69,16 @@ class EventRepository {
     });
   }
 
+  Future<void> updateEvent(Event event) async {
+    try {
+      final eventData = event.toJson();
+      await _firestore.collection('events').doc(event.id).update(eventData);
+    } catch (e, stackTrace) {
+      print('Error updating event: $e');
+      print('Stack trace: $stackTrace');
+      throw Exception('Error updating event: $e');
+    }
+  }
+
 // Add other event-related methods as needed
 }

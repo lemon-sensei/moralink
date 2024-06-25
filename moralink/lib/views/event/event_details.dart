@@ -85,6 +85,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           role: currentUser.role,
           registeredEvents: updatedRegisteredEvents,
           attendedEvents: [],
+          passportNumber: currentUser.passportNumber,
+          nameOnPassport: currentUser.nameOnPassport,
+          addressLine1: currentUser.addressLine1,
+          addressLine2: currentUser.addressLine2,
+          addressCity: currentUser.addressCity,
+          addressState: currentUser.addressState,
+          addressZipCode: currentUser.addressZipCode,
+          addressCountry: currentUser.addressCountry,
         );
 
         // Update the user profile in the repository

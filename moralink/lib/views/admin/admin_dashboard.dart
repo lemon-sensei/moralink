@@ -21,6 +21,14 @@ class AdminDashboard extends StatefulWidget {
 }
 
 class _AdminDashboardState extends State<AdminDashboard> {
+  final TextEditingController _eventIdController = TextEditingController();
+
+  @override
+  void dispose() {
+    _eventIdController.dispose();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,7 +110,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
               ),
             ),
             const SizedBox(height: 32.0),
-            Center(child: _buildManagementSection(authProvider, userProvider, textTheme)),
+            Center(
+                child: _buildManagementSection(
+                    authProvider, userProvider, textTheme)),
           ],
         ),
       ),
@@ -110,10 +120,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 
   Widget _buildTabletBody(
-      AuthProvider authProvider,
-      UserProvider userProvider,
-      TextTheme textTheme,
-      ) {
+    AuthProvider authProvider,
+    UserProvider userProvider,
+    TextTheme textTheme,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -154,10 +164,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 
   Widget _buildDesktopBody(
-      AuthProvider authProvider,
-      UserProvider userProvider,
-      TextTheme textTheme,
-      ) {
+    AuthProvider authProvider,
+    UserProvider userProvider,
+    TextTheme textTheme,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -244,10 +254,10 @@ class _AdminDashboardState extends State<AdminDashboard> {
   }
 
   Widget _buildManagementSection(
-      AuthProvider authProvider,
-      UserProvider userProvider,
-      TextTheme textTheme,
-      ) {
+    AuthProvider authProvider,
+    UserProvider userProvider,
+    TextTheme textTheme,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -266,16 +276,42 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ),
         ),
         const SizedBox(height: 16.0),
+        TextField(
+          controller: _eventIdController,
+          decoration: InputDecoration(
+            labelText: 'Event ID',
+            hintText: 'Enter event ID to edit',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        const SizedBox(height: 8.0),
         ElevatedButton(
           onPressed: () {
-            // Navigate to event management
+            final eventId = _eventIdController.text.trim();
+            if (eventId.isNotEmpty) {
+              context.push("/admin/edit-event/$eventId");
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Please enter an event ID')),
+              );
+            }
+          },
+          child: Text(
+            'Edit Event',
+            style: textTheme.bodyMedium,
+          ),
+        ),
+        const SizedBox(height: 16.0),
+        ElevatedButton(
+          onPressed: () {
+            // Navigate to event list management
+            context.push("/admin/events");
           },
           child: Text(
             'Manage Events',
             style: textTheme.bodyMedium,
           ),
         ),
-        const SizedBox(height: 32.0),
         Text(
           'Users',
           style: textTheme.titleMedium,

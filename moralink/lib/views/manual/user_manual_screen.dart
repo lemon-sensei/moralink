@@ -36,44 +36,70 @@ class UserManualScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('User Manual'),
       ),
-      body: Container(
-        color: backgroundColor,
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    'User Guide',
-                    style: textTheme.headlineLarge?.copyWith(color: fontColor),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Text(
+                      'User Guide',
+                      style:
+                          textTheme.headlineLarge?.copyWith(color: fontColor),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 50),
-                _buildSection(
-                  textTheme,
-                  'assets/manual/login-screen.png',
-                  'To use the full functionality of the application, a user must authenticate in order the system to identify and store data properly. This could achieve by using Google credential from your Gmail account. In order to start the authentication process, user just simply click on the "Sign in with Google" button. The prompt windows will immediately pop on the screen, from now on just select which Gmail account you want to link into our system.',
-                  fontColor,
-                  [],
-                ),
-                const SizedBox(height: 50),
-                const Divider(thickness: 2.0, color: Colors.grey),
-                const SizedBox(height: 50),
-                _buildSection(
-                  textTheme,
-                  'assets/manual/profile-screen.png',
-                  'User may need to update the bundle identification on this screen, such as Passport number or full name on Passport in order to participate in some event. User may required to provide their personal information to the management team of the event to enroll as an officially participant. User can update their required information in this screen and it will only send to the event manager when they officially request for.',
-                  fontColor,
-                  [],
-                ),
-                const SizedBox(height: 50),
-                const Divider(thickness: 2.0, color: Colors.grey),
-                const SizedBox(height: 50),
-              ],
+                  const SizedBox(height: 50),
+                  _buildSection(
+                    textTheme,
+                    'assets/manual/login-screen.png',
+                    "User authentication",
+                    'To use the full functionality of the application, a user must authenticate in order the system to identify and store data properly. This could achieve by using Google credential from your Gmail account. In order to start the authentication process, user just simply click on the "Sign in with Google" button. The prompt windows will immediately pop on the screen, from now on just select which Gmail account you want to link into our system.',
+                    fontColor,
+                    [],
+                  ),
+                  const SizedBox(height: 50),
+                  const Divider(thickness: 2.0, color: Colors.grey),
+                  const SizedBox(height: 50),
+                  _buildSection(
+                    textTheme,
+                    'assets/manual/profile-screen.png',
+                    "Update user profile",
+                    'User may need to update the bundle identification on this screen, such as Passport number or full name on Passport in order to participate in some event. User may required to provide their personal information to the management team of the event to enroll as an officially participant. User can update their required information in this screen and it will only send to the event manager when they officially request for.',
+                    fontColor,
+                    [],
+                  ),
+                  const SizedBox(height: 50),
+                  const Divider(thickness: 2.0, color: Colors.grey),
+                  const SizedBox(height: 50),
+                  _buildSection(
+                    textTheme,
+                    'assets/manual/enroll-screen.png',
+                    "Enroll the an event",
+                     "",
+                     fontColor,
+                    [],
+                  ),
+                  const SizedBox(height: 50),
+                  const Divider(thickness: 2.0, color: Colors.grey),
+                  const SizedBox(height: 50),
+                  _buildSection(
+                    textTheme,
+                    'assets/manual/my-qr-screen.png',
+                    "Attend to the event",
+                    "",
+                    fontColor,
+                    [],
+                  ),
+                  const SizedBox(height: 50),
+                  const Divider(thickness: 2.0, color: Colors.grey),
+                  const SizedBox(height: 50),
+                ],
+              ),
             ),
           ),
         ),
@@ -88,6 +114,7 @@ class UserManualScreen extends StatelessWidget {
   Widget _buildSection(
     TextTheme textTheme,
     String imagePath,
+    String topic,
     String paragraph,
     Color fontColor,
     List<String> bulletPoints,
@@ -95,12 +122,17 @@ class UserManualScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          width: 800,
-          child: Image.asset(
-            imagePath,
-            fit: BoxFit.contain,
+        Center(
+          child: Text(
+            topic,
+            style: textTheme.titleLarge?.copyWith(color: fontColor),
+            textAlign: TextAlign.justify,
           ),
+        ),
+        const SizedBox(height: 50),
+        Image.asset(
+          imagePath,
+          fit: BoxFit.contain,
         ),
         const SizedBox(height: 16.0),
         Text(

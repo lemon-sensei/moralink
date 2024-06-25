@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // ---------- Network
 import 'package:go_router/go_router.dart';
 
+import '../../config/app_config.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
