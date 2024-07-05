@@ -96,7 +96,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             const SizedBox(height: 16.0),
             Center(
               child: Text(
-                'Monitor Section',
+                'Monitor',
                 style: textTheme.headlineSmall,
               ),
             ),
@@ -105,7 +105,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             const SizedBox(height: 64.0),
             Center(
               child: Text(
-                'Management Section',
+                'Management',
                 style: textTheme.headlineSmall,
               ),
             ),
@@ -261,10 +261,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Events',
-          style: textTheme.titleMedium,
-        ),
         const SizedBox(height: 8.0),
         ElevatedButton(
           onPressed: () {
@@ -276,45 +272,41 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ),
         ),
         const SizedBox(height: 16.0),
-        TextField(
-          controller: _eventIdController,
-          decoration: InputDecoration(
-            labelText: 'Event ID',
-            hintText: 'Enter event ID to edit',
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 8.0),
-        ElevatedButton(
-          onPressed: () {
-            final eventId = _eventIdController.text.trim();
-            if (eventId.isNotEmpty) {
-              context.push("/admin/edit-event/$eventId");
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Please enter an event ID')),
-              );
-            }
-          },
-          child: Text(
-            'Edit Event',
-            style: textTheme.bodyMedium,
-          ),
-        ),
-        const SizedBox(height: 16.0),
+        // TextField(
+        //   controller: _eventIdController,
+        //   decoration: InputDecoration(
+        //     labelText: 'Event ID',
+        //     hintText: 'Enter event ID to edit',
+        //     border: OutlineInputBorder(),
+        //   ),
+        // ),
+        // const SizedBox(height: 8.0),
+        // ElevatedButton(
+        //   onPressed: () {
+        //     final eventId = _eventIdController.text.trim();
+        //     if (eventId.isNotEmpty) {
+        //       context.push("/admin/edit-event/$eventId");
+        //     } else {
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         SnackBar(content: Text('Please enter an event ID')),
+        //       );
+        //     }
+        //   },
+        //   child: Text(
+        //     'Edit Event',
+        //     style: textTheme.bodyMedium,
+        //   ),
+        // ),
+        // const SizedBox(height: 16.0),
         ElevatedButton(
           onPressed: () {
             // Navigate to event list management
-            context.push("/admin/events");
+            context.push("/admin/event-list");
           },
           child: Text(
             'Manage Events',
             style: textTheme.bodyMedium,
           ),
-        ),
-        Text(
-          'Users',
-          style: textTheme.titleMedium,
         ),
         const SizedBox(height: 16.0),
         ElevatedButton(

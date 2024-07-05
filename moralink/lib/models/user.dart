@@ -20,6 +20,8 @@ class AppUser {
   String? _addressState;
   String? _addressZipCode;
   String? _addressCountry;
+  String? _phone;
+  String? _lineId;
 
   String? get passportNumber => _passportNumber;
   set passportNumber(String? value) {
@@ -61,6 +63,16 @@ class AppUser {
     _addressCountry = value;
   }
 
+  String? get phone => _phone;
+  set phone(String? value) {
+    _phone = value;
+  }
+
+  String? get lineId => _lineId;
+  set lineId(String? value) {
+    _lineId = value;
+  }
+
   AppUser({
     required this.id,
     required this.name,
@@ -76,8 +88,9 @@ class AppUser {
     addressCity,
     addressState,
     addressZipCode,
-    addressCountry
-
+    addressCountry,
+    phone,
+    lineId,
   }) {
     _passportNumber = passportNumber;
     _nameOnPassport = nameOnPassport;
@@ -88,6 +101,9 @@ class AppUser {
     _addressState = addressState;
     _addressZipCode = addressZipCode;
     _addressCountry = addressCountry;
+
+    _phone = phone;
+    _lineId = lineId;
   }
 
   factory AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);

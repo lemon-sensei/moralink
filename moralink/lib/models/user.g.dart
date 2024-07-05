@@ -26,6 +26,8 @@ AppUser _$AppUserFromJson(Map<String, dynamic> json) => AppUser(
       addressState: json['addressState'],
       addressZipCode: json['addressZipCode'],
       addressCountry: json['addressCountry'],
+      phone: json['phone'],
+      lineId: json['lineId'],
     );
 
 Map<String, dynamic> _$AppUserToJson(AppUser instance) => <String, dynamic>{
@@ -44,6 +46,8 @@ Map<String, dynamic> _$AppUserToJson(AppUser instance) => <String, dynamic>{
       'addressState': instance.addressState,
       'addressZipCode': instance.addressZipCode,
       'addressCountry': instance.addressCountry,
+      'phone': instance.phone,
+      'lineId': instance.lineId,
     };
 
 const _$UserRoleEnumMap = {

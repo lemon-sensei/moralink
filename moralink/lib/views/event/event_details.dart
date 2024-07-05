@@ -93,6 +93,8 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
           addressState: currentUser.addressState,
           addressZipCode: currentUser.addressZipCode,
           addressCountry: currentUser.addressCountry,
+          phone: currentUser.phone,
+          lineId: currentUser.lineId,
         );
 
         // Update the user profile in the repository
@@ -204,6 +206,12 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                 ),
               ),
               const SizedBox(height: 30.0),
+              Text(
+                _event!.title,
+                style: textTheme.headlineLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 50.0),
               Text(
                 _event!.description,
                 style: textTheme.bodyLarge,
@@ -339,7 +347,14 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                   fit: BoxFit.cover,
                 ),
               ),
+
               const SizedBox(height: 30.0),
+              Text(
+                _event!.title,
+                style: textTheme.headlineLarge,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 50.0),
               Text(
                 _event!.description,
                 style: textTheme.bodyLarge,

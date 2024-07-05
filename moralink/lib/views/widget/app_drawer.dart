@@ -216,14 +216,18 @@ class AppDrawer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push("/privacy");
+                  },
                   child: Text(
                     "Privacy Policy",
                     style: textTheme.titleSmall,
                   )),
               const Text(" • "),
               TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push("/privacy");
+                  },
                   child: Text(
                     "Terms of Service",
                     style: textTheme.titleSmall,

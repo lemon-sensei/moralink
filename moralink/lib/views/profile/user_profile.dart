@@ -110,7 +110,89 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                'Passport Information',
+                                'Contact',
+                                style: textTheme.titleLarge,
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.phone ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'Phone',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the passport number in the user object
+                                  user.phone = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              TextField(
+                                controller: TextEditingController(
+                                  text: user.lineId ?? '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'LINE ID',
+                                  labelStyle: textTheme.bodyMedium,
+                                ),
+                                style: textTheme.bodyMedium,
+                                onChanged: (value) {
+                                  // Update the name on passport in the user object
+                                  user.lineId = value;
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              Visibility(
+                                visible: _showSuccessMessage,
+                                child: Text(
+                                  'Information updated successfully!',
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue, // Set the background color to blue
+                                ),
+                                onPressed: () async {
+                                  // Update the user profile in the database
+                                  await userProvider.updateUserProfile(user);
+                                  setState(() {
+                                    _showSuccessMessage = true;
+                                  });
+                                },
+                                child: Text(
+                                  'Update',
+                                  style: textTheme.bodyMedium?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: 400,
+                      child: Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Passport Detail',
                                 style: textTheme.titleLarge,
                               ),
                               const SizedBox(height: 16),

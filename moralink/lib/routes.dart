@@ -1,9 +1,12 @@
 // ---------- Common
 import 'package:flutter/material.dart';
+import 'package:moralink/views/about/privacy.dart';
 
 // ---------- Screen
 import 'package:moralink/views/admin/admin_dashboard.dart';
+import 'package:moralink/views/admin/event_management/event_details.dart';
 import 'package:moralink/views/admin/event_management/event_edit.dart';
+import 'package:moralink/views/admin/event_management/event_list.dart';
 import 'package:moralink/views/auth/login.dart';
 import 'package:moralink/views/event/event_details.dart';
 import 'package:moralink/views/event/event_list.dart';
@@ -31,6 +34,11 @@ final GoRouter _router = GoRouter(
       path: '/',
       builder: (BuildContext context, GoRouterState state) =>
           const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/privacy',
+      builder: (BuildContext context, GoRouterState state) =>
+      const PrivacyScreen(),
     ),
     GoRoute(
       path: '/login',
@@ -94,6 +102,19 @@ final GoRouter _router = GoRouter(
       path: '/admin/create-event',
       builder: (BuildContext context, GoRouterState state) =>
           const EventCreateAdmin(),
+    ),
+    GoRoute(
+      path: '/admin/event-list',
+      builder: (BuildContext context, GoRouterState state) =>
+          const EventListAdmin(),
+    ),
+    GoRoute(
+      path: '/admin/event-details/:eventId',
+      builder: (BuildContext context, GoRouterState state) {
+        final eventId = state.pathParameters['eventId'];
+
+        return EventDetailsScreenAdmin(eventId: eventId!);
+      },
     ),
     GoRoute(
       path: '/admin/edit-event/:eventId',

@@ -60,6 +60,8 @@ class AuthRepository {
         addressState: existingUser.addressState,
         addressZipCode: existingUser.addressZipCode,
         addressCountry: existingUser.addressCountry,
+        phone: existingUser.phone,
+        lineId: existingUser.lineId,
       );
 
       // Update the user profile in the Firestore database
