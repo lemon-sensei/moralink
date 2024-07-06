@@ -68,7 +68,8 @@ class _EventDetailsScreenAdminState extends State<EventDetailsScreenAdmin> {
       children: [
         Text(title, style: Theme.of(context).textTheme.headlineLarge),
         const SizedBox(height: 8),
-        Text('Total: ${users.length}', style: Theme.of(context).textTheme.titleLarge),
+        Text('Total: ${users.length}',
+            style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 8),
         ListView.builder(
           shrinkWrap: true,
@@ -82,10 +83,49 @@ class _EventDetailsScreenAdminState extends State<EventDetailsScreenAdmin> {
               ),
               title: Text('${user.name} (${user.email})'),
               subtitle: Text(user.addressCountry ?? 'Country not specified'),
+              onTap: () => _showUserDetailsDialog(context, user),
             );
           },
         ),
       ],
+    );
+  }
+
+  void _showUserDetailsDialog(BuildContext context, AppUser user) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('User Details'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Name on Passport: ${user.nameOnPassport ?? 'Not provided'}'),
+                Text('Passport Number: ${user.passportNumber ?? 'Not provided'}'),
+                Text('Country: ${user.addressCountry ?? 'Not provided'}'),
+                const Divider(),
+                Text('Phone: ${user.phone ?? 'Not provided'}'),
+                Text('Line ID: ${user.lineId ?? 'Not provided'}'),
+                const Divider(),
+                Text('Name: ${user.name}'),
+                Text('Email: ${user.email}'),
+                Text('User ID: ${user.id}'),
+
+                // Text('Registered Events: ${user.registeredEvents.length}'),
+                // Text('Attended Events: ${user.attendedEvents.length}'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -225,7 +265,8 @@ class _EventDetailsScreenAdminState extends State<EventDetailsScreenAdmin> {
                 ),
                 const SizedBox(width: 30.0),
                 Expanded(
-                  child: _buildUserList(_participatedUsers, 'Participated Users'),
+                  child:
+                      _buildUserList(_participatedUsers, 'Participated Users'),
                 ),
               ],
             ),
