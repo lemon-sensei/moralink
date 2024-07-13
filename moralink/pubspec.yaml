@@ -95,6 +95,7 @@ flutter:
     - assets/images/moralink_logo_bg.jpg
     - assets/images/moralink_logo_white.jpg
     - assets/images/moralink_logo_with_text.png
+    - assets/images/user_badge_bg.png
 
 
     - assets/manual/

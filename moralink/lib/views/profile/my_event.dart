@@ -129,13 +129,18 @@ class _MyEventScreenState extends State<MyEventScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 8),
-                    Center(child: Text(event.title, style: textTheme.titleLarge)),
-                    const SizedBox(height: 50),
+                    Center(
+                        child: Text(
+                      event.title,
+                      style: textTheme.titleLarge,
+                      textAlign: TextAlign.center,
+                    )),
+                    const SizedBox(height: 40),
                     QrImageView(
-                      embeddedImage: const AssetImage(
-                          "assets/images/moralink_logo_white.jpg"),
-                      embeddedImageStyle:
-                          const QrEmbeddedImageStyle(size: Size(36, 36)),
+                      // embeddedImage: const AssetImage(
+                      //     "assets/images/moralink_logo_white.jpg"),
+                      // embeddedImageStyle:
+                      //     const QrEmbeddedImageStyle(size: Size(36, 36)),
                       data:
                           "$hostDomain/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
                       // data: "/admin/event-registration/${qrCode.eventId}/${qrCode.userId}",
@@ -156,7 +161,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                       ),
                     ),
                     Text(user.name, style: textTheme.titleLarge),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 40),
                     Row(
                       children: [
                         Expanded(
@@ -198,7 +203,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                       ],
                     ),
                     const SizedBox(
-                      height: 50,
+                      height: 40,
                     ),
                     Text(
                       'Event ID: ${event.id}',

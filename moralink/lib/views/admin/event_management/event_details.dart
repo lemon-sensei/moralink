@@ -2,8 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:moralink/models/event.dart';
 import 'package:moralink/themes/colors.dart';
+import 'package:moralink/views/widget/user_badge.dart';
 import '../../../models/user.dart';
 import '../../../repositories/event_repository.dart';
+import '../../../services/screenshot_service.dart';
 import '../../../shared/widgets/responsive_layout.dart';
 
 // ---------- Network
@@ -100,8 +102,10 @@ class _EventDetailsScreenAdminState extends State<EventDetailsScreenAdmin> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Name on Passport: ${user.nameOnPassport ?? 'Not provided'}'),
-                Text('Passport Number: ${user.passportNumber ?? 'Not provided'}'),
+                Text(
+                    'Name on Passport: ${user.nameOnPassport ?? 'Not provided'}'),
+                Text(
+                    'Passport Number: ${user.passportNumber ?? 'Not provided'}'),
                 Text('Country: ${user.addressCountry ?? 'Not provided'}'),
                 const Divider(),
                 Text('Phone: ${user.phone ?? 'Not provided'}'),
@@ -109,7 +113,6 @@ class _EventDetailsScreenAdminState extends State<EventDetailsScreenAdmin> {
                 const Divider(),
                 Text('Name: ${user.name}'),
                 Text('Email: ${user.email}'),
-                Text('User ID: ${user.id}'),
 
                 // Text('Registered Events: ${user.registeredEvents.length}'),
                 // Text('Attended Events: ${user.attendedEvents.length}'),
@@ -122,6 +125,46 @@ class _EventDetailsScreenAdminState extends State<EventDetailsScreenAdmin> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //       builder: (context) => UserBadge(
+                //         logoURL: '', // Assuming this is intentionally empty
+                //         eventName: _event?.title ?? "Event not specified",
+                //         startDate: _event?.startDate ?? DateTime.now(),
+                //         endDate: _event?.endDate ?? DateTime.now(),
+                //         passportName: user.nameOnPassport ?? "Name not specified",
+                //         country: user.addressCountry ?? "Country not specified",
+                //         role: user.role.name ?? "Data not specified",
+                //         userId: user.id ?? "",
+                //         eventId: widget.eventId ?? "",
+                //           )),
+                // );
+
+                String currentInfo = "Captured at ${DateTime.now()}";
+
+                ScreenshotService.captureAndDownloadWidget(
+                  widgetBuilder: (info) => UserBadge(
+                    logoURL: '', // Assuming this is intentionally empty
+                    eventName: _event?.title ?? "Event not specified",
+                    startDate: _event?.startDate ?? DateTime.now(),
+                    endDate: _event?.endDate ?? DateTime.now(),
+                    passportName: user.nameOnPassport ?? "Name not specified",
+                    country: user.addressCountry ?? "Country not specified",
+                    role: user.role.name ?? "Data not specified",
+                    userId: user.id ?? "",
+                    eventId: widget.eventId ?? "",
+                  ),
+                  information: currentInfo,
+                  logicalSize: const Size(1240, 1748),
+                  pixelRatio: 1.0,
+                  fileName: "${user.name}_badge.png",
+                );
+              },
+              child: const Text('Get user badge'),
             ),
           ],
         );
