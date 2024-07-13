@@ -288,6 +288,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             style: textTheme.titleLarge,
                           ),
                           const SizedBox(
+                            height: 50,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.push("/profile");
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary),
+                            child: Text(
+                              'Update My Passport Details',
+                              style: textTheme.bodyLarge,
+                            ),
+                          ),
+                          const SizedBox(
                             height: 10,
                           ),
                           ElevatedButton(
@@ -300,6 +314,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               'Go to My Events',
                               style: textTheme.bodyLarge,
                             ),
+                          ),
+                          const SizedBox(
+                            height: 50,
                           ),
                         ],
                       )
@@ -431,6 +448,20 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                             style: textTheme.titleLarge,
                           ),
                           const SizedBox(
+                            height: 50,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.push("/profile");
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary),
+                            child: Text(
+                              'Update My Passport Details',
+                              style: textTheme.bodyLarge,
+                            ),
+                          ),
+                          const SizedBox(
                             height: 10,
                           ),
                           ElevatedButton(
@@ -443,6 +474,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                               'Go to My Events',
                               style: textTheme.bodyLarge,
                             ),
+                          ),
+                          const SizedBox(
+                            height: 50,
                           ),
                         ],
                       )
@@ -586,10 +620,24 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                     style: textTheme.titleLarge,
                                   ),
                                 ),
-                                const Center(
-                                  child: SizedBox(
-                                    height: 10,
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      context.push("/profile");
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.primary),
+                                    child: Text(
+                                      'Update My Passport Details',
+                                      style: textTheme.bodyLarge,
+                                    ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
                                 Center(
                                   child: ElevatedButton(
@@ -603,6 +651,9 @@ class _EventDetailsScreenState extends State<EventDetailsScreen> {
                                       style: textTheme.bodyLarge,
                                     ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 50,
                                 ),
                               ],
                             )

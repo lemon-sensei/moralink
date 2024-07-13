@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:moralink/providers/user_provider.dart';
 import '../../providers/auth_provider.dart';
+import '../../themes/colors.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -407,26 +408,24 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 50),
+                    Text(
+                      'View your upcoming events',
+                      style: textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () async {
-                        // Sign out logic
-                        await authProvider.signOut();
-                        // Navigate to the /home route after successful sign out
-                        if (!context.mounted) return;
-                        context.go('/home');
+                      onPressed: () {
+                        context.push("/my-event");
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Colors.red, // Change the primary color to red
-                      ),
+                          backgroundColor: AppColors.primary),
                       child: Text(
-                        'Sign Out',
-                        style:
-                            textTheme.labelLarge?.copyWith(color: Colors.white),
+                        'Go to My Events',
+                        style: textTheme.bodyLarge,
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 50),
                   ],
                 ),
               ),

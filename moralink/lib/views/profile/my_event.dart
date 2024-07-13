@@ -129,7 +129,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(height: 8),
-                    Text(event.title, style: textTheme.titleLarge),
+                    Center(child: Text(event.title, style: textTheme.titleLarge)),
                     const SizedBox(height: 50),
                     QrImageView(
                       embeddedImage: const AssetImage(
@@ -170,7 +170,7 @@ class _MyEventScreenState extends State<MyEventScreen> {
                                 ),
                                 Flexible(
                                   child: Text(
-                                    "${event.locationName}, ${event.locationAddress}",
+                                    "${event.locationName}",
                                     style: textTheme.titleSmall,
                                     overflow: TextOverflow.ellipsis,
                                     textAlign: TextAlign.center,

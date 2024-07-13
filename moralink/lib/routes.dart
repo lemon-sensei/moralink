@@ -14,7 +14,7 @@ import 'package:moralink/views/manual/user_manual_screen.dart';
 import 'package:moralink/views/not_found/not_found_screen.dart';
 import 'package:moralink/views/profile/my_event.dart';
 import 'package:moralink/views/home/home.dart';
-import 'package:moralink/views/settings/setting_screen.dart';
+import 'package:moralink/views/settings/setting.dart';
 import 'package:moralink/views/about/about_screen.dart';
 import 'package:moralink/views/splash/splash_screen.dart';
 import 'package:moralink/views/profile/user_profile.dart';
@@ -54,6 +54,11 @@ final GoRouter _router = GoRouter(
       path: '/profile',
       builder: (BuildContext context, GoRouterState state) =>
           const UserProfileScreen(),
+    ),
+    GoRoute(
+      path: '/setting',
+      builder: (BuildContext context, GoRouterState state) =>
+      const SettingScreen(),
     ),
     GoRoute(
       path: '/my-event',

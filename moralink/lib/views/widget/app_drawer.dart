@@ -184,6 +184,9 @@ class AppDrawer extends StatelessWidget {
                 'Settings',
                 style: textTheme.titleMedium,
               ),
+              onTap: () {
+                context.push("/setting");
+              },
             ),
           ListTile(
             leading: Icon(Icons.book_rounded,
